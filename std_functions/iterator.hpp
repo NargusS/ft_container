@@ -6,13 +6,19 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 22:54:07 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/11 17:31:06 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:26:01 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cstddef>
 
  namespace ft {
+    class input_iterator_tag {};
+    class output_iterator_tag {};
+    class forward_iterator_tag : public input_iterator_tag{};
+    class bidirectional_iterator_tag : public forward_iterator_tag{};
+    class random_access_iterator_tag : public bidirectional_iterator_tag{};
+
     template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&>
 	class iterator {
 		public:
@@ -34,7 +40,7 @@
     class iterator_traits<T*> {
         typedef T                          value_type;
         typedef ptrdiff_t                  difference_type;
-        typedef std::random_access_iterator_tag iterator_category;
+        typedef random_access_iterator_tag iterator_category;
         typedef T*                         pointer;
         typedef T&                         reference;
     };
@@ -42,7 +48,7 @@
     class iterator_traits<const T*> {
         typedef T                          value_type;
         typedef ptrdiff_t                  difference_type;
-        typedef std::random_access_iterator_tag iterator_category;
+        typedef random_access_iterator_tag iterator_category;
         typedef const T*                         pointer;
         typedef const T&                         reference;
     };
