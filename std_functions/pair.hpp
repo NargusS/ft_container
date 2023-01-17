@@ -6,9 +6,12 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 16:12:12 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/03 19:48:16 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/17 22:24:10 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef PAIR_HPP
+# define PAIR_HPP
 
 namespace ft{
 	template <class T1, class T2>
@@ -75,3 +78,5 @@ namespace ft{
 	return pair<T1, T2>(x, y);
 	}
 }
+
+#endif

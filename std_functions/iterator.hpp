@@ -6,9 +6,12 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 22:54:07 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/13 14:26:01 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/17 22:23:44 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef ITERATOR_HPP
+# define ITERATOR_HPP
 
 #include <cstddef>
 
@@ -53,3 +56,5 @@
         typedef const T&                         reference;
     };
 }
+
+#endif

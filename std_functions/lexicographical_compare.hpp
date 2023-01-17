@@ -6,9 +6,12 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 16:04:17 by achane-l          #+#    #+#             */
-/*   Updated: 2022/12/19 16:08:28 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/17 22:23:59 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef LEXICOGRAPHICAL_COMPARE_HPP
+# define LEXICOGRAPHICAL_COMPARE_HPP
 
 namespace ft
 {
@@ -27,3 +30,5 @@ namespace ft
 		return (first1 == last1) && (first2 != last2);
 	}	
 }
+
+#endif

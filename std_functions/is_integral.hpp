@@ -6,9 +6,12 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 19:24:32 by achane-l          #+#    #+#             */
-/*   Updated: 2022/12/19 15:44:50 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/17 22:23:07 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef IS_INTEGRAL_HPP
+# define IS_INTEGRAL_HPP
 
 namespace ft{
 	template <typename T>
@@ -68,3 +71,5 @@ namespace ft{
 		static const bool value = true;
 	};
 }
+
+#endif
