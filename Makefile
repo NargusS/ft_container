@@ -6,30 +6,35 @@
 #    By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 16:23:43 by achane-l          #+#    #+#              #
-#    Updated: 2023/01/11 17:48:03 by achane-l         ###   ########.fr        #
+#    Updated: 2023/01/18 19:06:27 by achane-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = unit_test
 
-SRCS = test_unit/std_function.cpp
+FUNCTION = test_unit/std_function.cpp
+VECTOR = test_unit/vector_test.cpp
 
 COMPILER = c++
 
 FLAGS = -std=c++98 -Wall -Werror -Wextra
 
-OBJS = ${SRCS:.cpp=.o}
+OBJS_FUNCTION = ${FUNCTION:.cpp=.o}
+OBJS_VECTOR = ${VECTOR:.cpp=.o}
 
-all: ${NAME}
+all: function vector
 
-${NAME}: ${OBJS}
-		${COMPILER} ${FLAGS} ${OBJS} -I includes -o ${NAME}
+function: ${OBJS_FUNCTION}
+		${COMPILER} ${FLAGS} ${OBJS_FUNCTION} -I includes -o unit_test_function
+
+vector: ${OBJS_VECTOR}
+		${COMPILER} ${FLAGS} ${OBJS_VECTOR} -I includes -o unit_test_vector
 
 clean:
-	rm -f ${OBJS}
+	rm -f ${OBJS_FUNCTION} ${OBJS_VECTOR}
 
 fclean:
-	rm -f ${OBJS} ${NAME}
+	rm -f ${OBJS_FUNCTION} unit_test_function unit_test_vector
 
 re: fclean all
 

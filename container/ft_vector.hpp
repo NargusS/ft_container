@@ -6,13 +6,18 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:24:57 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/17 22:28:41 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/18 20:03:52 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_VECTOR_HPP
 #define FT_VECTOR_HPP
 #include <memory>
+#include "../iterators/iterator.hpp"
+#include "../std_functions/equal.hpp"
+#include "../std_functions/enable_if.hpp"
+#include "../std_functions/lexicographical_compare.hpp"
+#include "../std_functions/is_integral.hpp"
 
 namespace ft{
 
@@ -30,27 +35,22 @@ namespace ft{
 		class T,
 		class Allocator = std::allocator<T>
 	> class vector{
-		private:
-			pointer _data;
-			size_type _size;
-			size_type _capacity;
-			allocator_type _allocator;
 		public:
-			typedef typename Allocator allocator_type;
+			typedef Allocator allocator_type;
 			typedef typename allocator_type::value_type	value_type;
 			typedef typename allocator_type::size_type	size_type;
 			typedef typename allocator_type::reference	reference;
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer	pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef ft::random_access_iterator<value_type> iterator
-			typedef ft::random_access_iterator<const value_type> const_iterator
-			typename ft::reverse_iterator<iterator> reverse_iterator
-			typename ft::reverse_iterator<const_iterator> const_reverse_iterator
+			typedef ft::random_access_iterator<value_type> iterator;
+			typedef ft::random_access_iterator<const value_type> const_iterator;
+			typedef	ft::reverse_iterator<iterator> reverse_iterator;
+			typedef	ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;
 
 			// ================ Constructors ================
-			explicit vector(const allocator_type& alloc = allocator_type()): _data(NULL), _size(0), _capacity(0), _allocator(alloc);
+			explicit vector(const allocator_type& alloc = allocator_type()): _data(NULL), _size(0), _capacity(0), _allocator(alloc) {};
 
 			explicit vector( size_type count,const T& value = T(),const allocator_type& alloc = allocator_type()){
 				_allocator = alloc;
@@ -60,7 +60,7 @@ namespace ft{
 			};
 
 			template< class InputIt >
-			vector( InputIt first, InputIt last,const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIt>::value>::type* = NULL){
+			vector( InputIt first, InputIt last,const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL){
 				_allocator = alloc;
 				_size = 0;
 				_capacity = 0;
@@ -72,14 +72,12 @@ namespace ft{
 				_size = 0;
 				_capacity = 0;
 				assign(other.begin(), other.end());
-				
-				// replace with assign
 			};
 			// ================ END Constructors ================
 			// ================    Destructor    ================
 			~vector(){
 				clear();
-				_alloc.deallocate(_data, _capacity);
+				_allocator.deallocate(_data, _capacity);
 			};
 			// ================  END Destructor  ================
 			vector&	operator=(const vector& other){
@@ -112,7 +110,7 @@ namespace ft{
 			};
 
 			const_reverse_iterator rbegin() const{
-				return (const_reverse_iterator(cend()));
+				return (const_reverse_iterator(end()));
 			};
 
 			reverse_iterator rend(){
@@ -120,7 +118,7 @@ namespace ft{
 			};
 
 			const_reverse_iterator rend() const{
-				return (const_reverse_iterator(cbegin()));
+				return (const_reverse_iterator(begin()));
 			};
 
 			// ================ END Iterator     ================
@@ -210,7 +208,7 @@ namespace ft{
 			// ================END Element access  ================
 			// ================     Modifiers    ================
 			void	clear(){
-				if (size > 0)
+				if (_size > 0)
 					resize(0);
 			}
 
@@ -235,8 +233,8 @@ namespace ft{
 				}
 			};
 
-			template <class InputIterator>
-			iterator	insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = NULL){
+			template <class InputIt>
+			iterator	insert(iterator position, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL){
 				vector tmp(position, end());
 				_size -= ft::distance(position, end());
 				while (first != last){
@@ -298,24 +296,24 @@ namespace ft{
 			};
 
 			void	swap(vector& other){
-				allocator_type    tmp_alloc = _alloc;
-				pointer           tmp_ptr = _ptr;
+				allocator_type    tmp_allocator = _allocator;
+				pointer           tmp_data = _data;
 				size_type         tmp_capacity = _capacity;
 				size_type         tmp_size = _size;
 
-				_alloc = other._alloc;
-				_ptr = other._ptr;
+				_allocator = other._allocator;
+				_data = other._data;
 				_capacity = other._capacity;
 				_size = other._size;
 
-				other._alloc = tmp_alloc;
-				other._ptr = tmp_ptr;
+				other._alloc = tmp_allocator;
+				other._data = tmp_data;
 				other._capacity = tmp_capacity;
 				other._size = tmp_size;
 			}
 
-			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = NULL){
+			template <class InputIt>
+			void assign(InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL){
 				clear();
 				insert(begin(), first, last);
 			};
@@ -329,11 +327,16 @@ namespace ft{
 			allocator_type	get_allocator()const {
 				return (_allocator);
 			}
+		private:
+			pointer _data;
+			size_type _size;
+			size_type _capacity;
+			allocator_type _allocator;
 	};
 
 	template <class T, class Alloc>
 	bool operator==( const std::vector<T,Alloc>& lhs,const std::vector<T,Alloc>& rhs ){
-		return ((lhs.size == rhs.size) && ft::equal(lhs.begin(), lhs.end(), rhs.begin()))
+		return ((lhs.size == rhs.size) && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
 
 	template <class T, class Alloc>
