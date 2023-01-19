@@ -6,7 +6,7 @@
 #    By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 16:23:43 by achane-l          #+#    #+#              #
-#    Updated: 2023/01/18 19:06:27 by achane-l         ###   ########.fr        #
+#    Updated: 2023/01/19 00:33:26 by achane-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ VECTOR = test_unit/vector_test.cpp
 
 COMPILER = c++
 
-FLAGS = -std=c++98 -Wall -Werror -Wextra
+FLAGS = -std=c++98 -Wall -Werror -Wextra -fsanitize=address
 
 OBJS_FUNCTION = ${FUNCTION:.cpp=.o}
 OBJS_VECTOR = ${VECTOR:.cpp=.o}
@@ -34,7 +34,7 @@ clean:
 	rm -f ${OBJS_FUNCTION} ${OBJS_VECTOR}
 
 fclean:
-	rm -f ${OBJS_FUNCTION} unit_test_function unit_test_vector
+	rm -f ${OBJS_FUNCTION} ${OBJS_VECTOR} unit_test_function unit_test_vector
 
 re: fclean all
 

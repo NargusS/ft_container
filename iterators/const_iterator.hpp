@@ -1,51 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iterator.hpp                                       :+:      :+:    :+:   */
+/*   const_iterator.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 22:54:07 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/19 00:50:06 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/19 00:21:45 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ITERATOR_HPP
-# define ITERATOR_HPP
+#ifndef CONST_ITERATOR_HPP
+# define CONST_ITERATOR_HPP
 
  namespace ft {
-    struct input_iterator_tag {};
-    struct output_iterator_tag {};
-    struct forward_iterator_tag : public input_iterator_tag{};
-    struct bidirectional_iterator_tag : public forward_iterator_tag{};
-    struct random_access_iterator_tag : public bidirectional_iterator_tag{};
 
 	template <class T>
-    class iterator{
+    class const_iterator{
         public:
 			typedef T							value_type;
 			typedef std::ptrdiff_t    			difference_type;
-			typedef T*							pointer;
-			typedef T&							reference;
+			typedef const T*					pointer;
+			typedef const T&					reference;
 			typedef random_access_iterator_tag	iterator_category;
 
-            iterator():_current(NULL){};
-            iterator(pointer other):_current(other){};
-            iterator(const iterator<T> &other){
+            const_iterator():_current(NULL){};
+            const_iterator(pointer other):_current(other){};
+            const_iterator(const iterator<T> &other){
                 _current = other.base();
             };
-
-            iterator<T>& operator=(const iterator<T>& other){
+            const_iterator<T>& operator=(const iterator<T>& other){
                 if (this != other)
                     _current = other.base();
                 return (*this);
             };
 
-			operator iterator<const value_type>() const {
-				return iterator<const value_type>(_current);
+			operator const_iterator<const value_type>() const {
+				return const_iterator<const value_type>(_current);
 			}
 
-            ~iterator(){};
+			~const_iterator(){};
             pointer base() const {
                 return (_current);
             }
@@ -62,42 +56,42 @@
                 return (_current[n]);
             }
 
-            iterator& operator++(){
+            const_iterator& operator++(){
                 ++_current;
 				return (*(this));
             }
 
-            iterator& operator--(){
+            const_iterator& operator--(){
                 --_current;
 				return (*(this));
             }
 
-            iterator operator++(int){
-                iterator  tmp(*this);
+            const_iterator operator++(int){
+                const_iterator  tmp(*this);
 				_current++;
                 return (tmp);
             }
 
-            iterator operator--(int){
-                iterator  tmp(*this);
+            const_iterator operator--(int){
+                const_iterator  tmp(*this);
 				_current--;
                 return (tmp);
             }
 
-            iterator operator+(difference_type n) const{
+            const_iterator operator+(difference_type n) const{
                 return (_current + n);
             }
 
-            iterator operator-(difference_type n) const{
+            const_iterator operator-(difference_type n) const{
                 return (_current - n);
             }
 
-            iterator&  operator+=(difference_type n){
+            const_iterator&  operator+=(difference_type n){
                 _current += n;
                 return (*this);
             }
 
-            iterator&  operator-=(difference_type n){
+            const_iterator&  operator-=(difference_type n){
                 _current -= n;
                 return (*this);
             }
@@ -106,43 +100,43 @@
     };
 
 	template<class Iter1, class Iter2>
-	bool	operator==(const ft::iterator<Iter1>& lhs,
-						const ft::iterator<Iter2>& rhs) {
+	bool	operator==(const ft::const_iterator<Iter1>& lhs,
+						const ft::const_iterator<Iter2>& rhs) {
 
 		return (lhs.base() == rhs.base());
 	}
 
 	template<class Iter1, class Iter2>
-	bool	operator!=(const ft::iterator<Iter1>& lhs, \
-						const ft::iterator<Iter2>& rhs) {
+	bool	operator!=(const ft::const_iterator<Iter1>& lhs, \
+						const ft::const_iterator<Iter2>& rhs) {
 
 		return (lhs.base() != rhs.base());
 	}
 
 	template<class Iter1, class Iter2>
-	bool 	operator<(const ft::iterator<Iter1>& lhs, \
-						const ft::iterator<Iter2>& rhs) {
+	bool 	operator<(const ft::const_iterator<Iter1>& lhs, \
+						const ft::const_iterator<Iter2>& rhs) {
 
 		return (lhs.base() < rhs.base());
 	}
 
 	template<class Iter1, class Iter2>
-	bool 	operator<=(const ft::iterator<Iter1>& lhs, \
-						const ft::iterator<Iter2>& rhs) {
+	bool 	operator<=(const ft::const_iterator<Iter1>& lhs, \
+						const ft::const_iterator<Iter2>& rhs) {
 
 		return (lhs.base() <= rhs.base());
 	}
 
 	template<class Iter1, class Iter2>
-	bool 	operator>(const ft::iterator<Iter1>& lhs, \
-						const ft::iterator<Iter2>& rhs) {
+	bool 	operator>(const ft::const_iterator<Iter1>& lhs, \
+						const ft::const_iterator<Iter2>& rhs) {
 
 		return (lhs.base() > rhs.base());
 	}
 
 	template<class Iter1, class Iter2>
-	bool 	operator>=(const ft::iterator<Iter1>& lhs, \
-						const ft::iterator<Iter2>& rhs) {
+	bool 	operator>=(const ft::const_iterator<Iter1>& lhs, \
+						const ft::const_iterator<Iter2>& rhs) {
 
 		return (lhs.base() >= rhs.base());
 	}
@@ -151,8 +145,8 @@
 	/*			OPERATORS TO ADVANCE THE ITERATOR			*/
 
 	template<class Iter>
-	iterator<Iter>	operator+(typename iterator<Iter>::difference_type n, \
-               						const iterator<Iter>& it) {
+	const_iterator<Iter>	operator+(typename const_iterator<Iter>::difference_type n, \
+               						const const_iterator<Iter>& it) {
 
 		return (iterator<Iter>(it.base() - n));
 	}
@@ -161,8 +155,8 @@
 	/*			OPERATORS TO COMPUTE THE DISTANCE BETWEEN TWO ITERATOR ADAPTORS			*/
 
 	template<class Iter1, class Iter2>
-	typename iterator<Iter1>::difference_type	operator-(const iterator<Iter1>& lhs, \
-               												const iterator<Iter2>& rhs) {
+	typename const_iterator<Iter1>::difference_type	operator-(const const_iterator<Iter1>& lhs, \
+               												const const_iterator<Iter2>& rhs) {
 
 		return (rhs.base() - lhs.base());
 	}

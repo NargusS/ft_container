@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:24:57 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/18 20:03:52 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/19 01:05:47 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 #define FT_VECTOR_HPP
 #include <memory>
 #include "../iterators/iterator.hpp"
+#include "../iterators/const_iterator.hpp"
+#include "../iterators/reverse_iterator.hpp"
 #include "../std_functions/equal.hpp"
 #include "../std_functions/enable_if.hpp"
 #include "../std_functions/lexicographical_compare.hpp"
 #include "../std_functions/is_integral.hpp"
+#include <iostream>
 
 namespace ft{
 
@@ -43,8 +46,8 @@ namespace ft{
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer	pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef ft::random_access_iterator<value_type> iterator;
-			typedef ft::random_access_iterator<const value_type> const_iterator;
+			typedef ft::iterator<value_type> iterator;
+			typedef ft::const_iterator<const value_type> const_iterator;
 			typedef	ft::reverse_iterator<iterator> reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;
@@ -163,7 +166,8 @@ namespace ft{
 						_allocator.construct(tmp + i, _data[i]);
 					for (size_type i = 0; i < _size; i++)
 						_allocator.destroy(_data + i);
-					_allocator.deallocate(_data, _capacity);
+					if (_capacity > 0)
+						_allocator.deallocate(_data, _capacity);
 					_data = tmp;
 					_capacity = n;
 				}
@@ -208,8 +212,9 @@ namespace ft{
 			// ================END Element access  ================
 			// ================     Modifiers    ================
 			void	clear(){
-				if (_size > 0)
+				if (_size > 0){
 					resize(0);
+				}
 			}
 
 			iterator	insert(iterator position, const value_type& val){
@@ -234,7 +239,7 @@ namespace ft{
 			};
 
 			template <class InputIt>
-			iterator	insert(iterator position, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL){
+			void	insert(iterator position, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL){
 				vector tmp(position, end());
 				_size -= ft::distance(position, end());
 				while (first != last){
@@ -315,12 +320,18 @@ namespace ft{
 			template <class InputIt>
 			void assign(InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type* = NULL){
 				clear();
-				insert(begin(), first, last);
+				while (first != last){
+					push_back(*first);
+					first++;
+				}
 			};
 
 			void assign(size_type n, const value_type& val){
 				clear();
-				insert(begin(), n, val);
+				while (n){
+					push_back(val);
+					n--;
+				}
 			};
 
 

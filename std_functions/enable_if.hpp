@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 19:01:56 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/17 22:22:50 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/19 00:50:04 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define ENABLE_IF_HPP
 
 namespace ft{
-	template<bool B, typename T>
+	template<bool B, class T = void>
 	struct enable_if {};
 	template<typename T>
 	struct enable_if<true, T> { typedef T type; };
