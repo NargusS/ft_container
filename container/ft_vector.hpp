@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:24:57 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/19 01:05:47 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:32:49 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #define FT_VECTOR_HPP
 #include <memory>
 #include "../iterators/iterator.hpp"
-#include "../iterators/const_iterator.hpp"
 #include "../iterators/reverse_iterator.hpp"
 #include "../std_functions/equal.hpp"
 #include "../std_functions/enable_if.hpp"
@@ -47,7 +46,7 @@ namespace ft{
 			typedef typename allocator_type::pointer	pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
 			typedef ft::iterator<value_type> iterator;
-			typedef ft::const_iterator<const value_type> const_iterator;
+			typedef ft::iterator<const value_type> const_iterator;
 			typedef	ft::reverse_iterator<iterator> reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;

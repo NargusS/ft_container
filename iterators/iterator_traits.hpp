@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 22:08:02 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/18 22:31:16 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/19 14:14:33 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #define ITERATOR_TRAITS_HPP
 
 namespace ft{
+	struct input_iterator_tag {};
+	struct output_iterator_tag {};
+	struct forward_iterator_tag : public input_iterator_tag{};
+	struct bidirectional_iterator_tag : public forward_iterator_tag{};
+	struct random_access_iterator_tag : public bidirectional_iterator_tag{};
+
 	template <class Iter>
 	struct iterator_traits {
 	    typedef typename Iter::value_type          	 value_type;
