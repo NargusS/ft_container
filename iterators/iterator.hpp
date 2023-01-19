@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 22:54:07 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/19 14:16:10 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/19 19:27:12 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,20 @@
 			typedef typename ft::iterator_traits<T*>::pointer			pointer;
 			typedef typename ft::iterator_traits<T*>::reference			reference;
 
-			iterator():_current(NULL){};
+			iterator():_current(0){};
 			iterator(pointer other):_current(other){};
 			iterator(const iterator<T> &other){
 				_current = other.base();
 			};
 
-			iterator<T>& operator=(const iterator<T>& other){
+			iterator& operator=(const iterator& other){
 				if (this != other)
 					_current = other.base();
 				return (*this);
 			};
 
-			operator iterator<const value_type>() const {
-				return iterator<const value_type>(_current);
-			}
-
 			~iterator(){};
+
 			pointer base() const {
 				return (_current);
 			}

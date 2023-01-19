@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 22:21:08 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/19 14:12:42 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/19 20:13:02 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int main(){
 	compare_and_print(ft2.empty(), std2.empty());
 	compare_and_print(ft3.empty(), std3.empty());
 	std::cout << std::endl;
-	std::cout << YEL<<"compare empty of capacity" <<RESET << std::endl;
+	std::cout << YEL<<"compare capacity of vector" <<RESET << std::endl;
 	compare_and_print(ft1.capacity(), std1.capacity());
 	compare_and_print(ft2.capacity(), std2.capacity());
 	compare_and_print(ft3.capacity(), std3.capacity());
@@ -89,18 +89,39 @@ int main(){
 	compare_vector_and_print(std3.rbegin(),std3.rend(), ft3.rbegin());
 	std::cout << std::endl;
 	std::cout << YEL<<"create new vector with = operator and compare" <<RESET << std::endl;
-	std::vector<int>	std4 = std1;
-	ft::vector<int>		ft4 = ft1;
+	std::vector<int> std4 = std1;
+	ft::vector<int>	ft4 = ft1;
+
+	compare_and_print(std4.size(), ft4.size());
+	compare_and_print(std1.size(), ft1.size());
+	compare_and_print(std4.capacity(), ft4.capacity());
+	compare_and_print(std1.capacity(), ft1.capacity());
+	compare_and_print(std4.max_size(), ft4.max_size());
+	compare_and_print(std1.max_size(), ft1.max_size());
+	compare_and_print(std4.empty(), ft4.empty());
+	compare_and_print(std1.empty(), ft1.empty());
+
 	compare_vector_and_print(std4.begin(), std4.end(), ft4.begin());
 	compare_vector_and_print(std4.begin(), std4.end(), std1.begin());
 	compare_vector_and_print(ft4.begin(), ft4.end(), std4.begin());
 	compare_vector_and_print(ft4.begin(), ft4.end(), ft1.begin());
 	std::cout << std::endl;
 	std::cout << YEL<<"create new vector with vector(const vector &other) and compare" <<RESET << std::endl;
-	std::vector<int>	std5(std1);
-	ft::vector<int>		ft5(ft1);
+	std::vector<int> std5(std1);
+	ft::vector<int>	ft5(ft1);
+	compare_and_print(std5.size(), ft5.size());
+	compare_and_print(std1.size(), ft1.size());
+	compare_and_print(std5.capacity(), ft5.capacity());
+	compare_and_print(std1.capacity(), ft1.capacity());
+	compare_and_print(std5.max_size(), ft5.max_size());
+	compare_and_print(std1.max_size(), ft1.max_size());
+	compare_and_print(std5.empty(), ft5.empty());
+	compare_and_print(std1.empty(), ft1.empty());
+
 	compare_vector_and_print(std5.begin(), std5.end(), ft5.begin());
 	compare_vector_and_print(std5.begin(), std5.end(), std1.begin());
 	compare_vector_and_print(ft5.begin(), ft5.end(), std5.begin());
 	compare_vector_and_print(ft5.begin(), ft5.end(), ft1.begin());
+
+
 }

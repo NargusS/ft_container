@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:24:57 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/19 15:32:49 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/19 20:10:52 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,26 +69,34 @@ namespace ft{
 				assign(first, last);
 			};
 
-			vector( const vector& other ){
-				_allocator = other._allocator;
-				_size = 0;
-				_capacity = 0;
-				assign(other.begin(), other.end());
+			vector(const vector& other ): _data(NULL), _size(0), _capacity(0),_allocator(allocator_type()){
+				*this = other;
+			};
+
+			vector&	operator=(const vector& other){
+				if (this != &other){
+					_allocator = allocator_type();
+					_size = 0;
+					_capacity = other.size();
+					_data = _allocator.allocate(other.size());
+					for (size_type i = 0; i < other.size(); i++){
+						_allocator.construct(_data + i, other[i]);
+						_size++;
+					}
+					// assign(other.begin(), other.end());
+				}
+				return (*this);
 			};
 			// ================ END Constructors ================
 			// ================    Destructor    ================
 			~vector(){
-				clear();
-				_allocator.deallocate(_data, _capacity);
+				for (size_type i = 0; i < _size; i++) {
+					_allocator.destroy(_data + i);
+				}
+				if (_capacity > 0) 
+					_allocator.deallocate(_data, _capacity);
 			};
 			// ================  END Destructor  ================
-			vector&	operator=(const vector& other){
-				if (this != &other){
-					clear();
-					assign(other.begin(), other.end());
-				}
-				return (*this);
-			};
 
 			// ================     Iterator     ================
 			iterator begin(){
@@ -333,7 +341,6 @@ namespace ft{
 				}
 			};
 
-
 			allocator_type	get_allocator()const {
 				return (_allocator);
 			}
@@ -345,32 +352,32 @@ namespace ft{
 	};
 
 	template <class T, class Alloc>
-	bool operator==( const std::vector<T,Alloc>& lhs,const std::vector<T,Alloc>& rhs ){
+	bool operator==( const ft::vector<T,Alloc>& lhs,const ft::vector<T,Alloc>& rhs ){
 		return ((lhs.size == rhs.size) && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
 
 	template <class T, class Alloc>
-	bool operator!=( const std::vector<T,Alloc>& lhs,const std::vector<T,Alloc>& rhs ){
+	bool operator!=( const ft::vector<T,Alloc>& lhs,const ft::vector<T,Alloc>& rhs ){
 		return (!(lhs.size == rhs.size) && !(ft::equal(lhs.begin(), lhs.end(), rhs.begin())));
 	}
 
 	template <class T, class Alloc>
-	bool operator<( const std::vector<T,Alloc>& lhs,const std::vector<T,Alloc>& rhs ){
+	bool operator<( const ft::vector<T,Alloc>& lhs,const ft::vector<T,Alloc>& rhs ){
 		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 
 	template <class T, class Alloc>
-	bool operator<=( const std::vector<T,Alloc>& lhs,const std::vector<T,Alloc>& rhs ){
+	bool operator<=( const ft::vector<T,Alloc>& lhs,const ft::vector<T,Alloc>& rhs ){
 		return (!(lhs > rhs));
 	}
 
 	template <class T, class Alloc>
-	bool operator>( const std::vector<T,Alloc>& lhs,const std::vector<T,Alloc>& rhs ){
+	bool operator>( const ft::vector<T,Alloc>& lhs,const ft::vector<T,Alloc>& rhs ){
 		return (rhs < lhs);
 	}
 
 	template <class T, class Alloc>
-	bool operator>=( const std::vector<T,Alloc>& lhs,const std::vector<T,Alloc>& rhs ){
+	bool operator>=( const ft::vector<T,Alloc>& lhs,const ft::vector<T,Alloc>& rhs ){
 		return (!(lhs < rhs));
 	}
 

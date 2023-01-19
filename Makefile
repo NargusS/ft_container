@@ -6,7 +6,7 @@
 #    By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 16:23:43 by achane-l          #+#    #+#              #
-#    Updated: 2023/01/19 00:33:26 by achane-l         ###   ########.fr        #
+#    Updated: 2023/01/19 18:14:13 by achane-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ VECTOR = test_unit/vector_test.cpp
 
 COMPILER = c++
 
-FLAGS = -std=c++98 -Wall -Werror -Wextra -fsanitize=address
+FLAGS = -std=c++98 -Wall -Werror -Wextra -g3
 
 OBJS_FUNCTION = ${FUNCTION:.cpp=.o}
 OBJS_VECTOR = ${VECTOR:.cpp=.o}

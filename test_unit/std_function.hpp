@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 16:26:06 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/11 16:48:30 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/19 18:09:40 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 #include "../std_functions/enable_if.hpp"
 #include "../std_functions/equal.hpp"
 #include "../std_functions/is_integral.hpp"
+#include <type_traits>
 
 template <typename T1, typename T2>
 typename std::enable_if<std::is_same<T1, T2>::value, int>::type check_enable_if(T1 t1, T2 t2){
