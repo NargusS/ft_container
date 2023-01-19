@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:24:57 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/19 20:10:52 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/19 20:35:55 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ namespace ft{
 						_allocator.construct(_data + i, other[i]);
 						_size++;
 					}
-					// assign(other.begin(), other.end());
 				}
 				return (*this);
 			};

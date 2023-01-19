@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 22:21:08 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/19 20:13:02 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/19 20:35:21 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	compare_vector_and_print(InputIterator1 first1, InputIterator1 last1, Input
 	else
 		std::cout << RED << "[KO]" << RESET;
 }
-
 
 int main(){
 	ft::vector<int> ft1;
@@ -122,6 +121,41 @@ int main(){
 	compare_vector_and_print(std5.begin(), std5.end(), std1.begin());
 	compare_vector_and_print(ft5.begin(), ft5.end(), std5.begin());
 	compare_vector_and_print(ft5.begin(), ft5.end(), ft1.begin());
+	std::cout << std::endl;
+	std::cout << YEL<<"TEST ITERATOR AND ACCESS OPERATOR" <<RESET << std::endl;
+	ft::vector<int>::iterator it_ft = ft5.begin();
+	std::vector<int>::iterator it_std = std5.begin();
+	int index = 0;
+	bool ko = false;
 
-
+	if (ft5.front()!=std5.front())
+		std::cout << RED << "[KO with front operator] " << RESET;
+	else
+		std::cout << GRN <<"[OK]" << RESET;
+	if (ft5.back() != std5.back())
+		std::cout << RED << "[KO with back operator] " << RESET;
+	else
+		std::cout << GRN <<"[OK]" << RESET;
+	for (; it_ft != ft5.end();it_ft++){
+		if (*it_ft != *it_std){
+			std::cout << RED << "[KO with iterator*]" << RESET;
+			ko = true;
+			break;
+		}
+		if (ft5[index]!=std5[index]){
+			std::cout << RED << "[KO with [] operator] " << RESET;
+			ko = true;
+			break;
+		}
+		if (ft5.at(index)!=std5.at(index)){
+			std::cout << RED << "[KO with at() operator] " << RESET;
+			ko = true;
+			break;
+		}
+		it_std++;
+		index++;
+	}
+	if (!ko)
+		std::cout << GRN <<"[OK]" << RESET;
+	std::cout << std::endl;
 }
