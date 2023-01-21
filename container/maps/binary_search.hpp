@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 09:58:02 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/21 19:00:33 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/21 19:13:22 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ Node	*SearchParentValue(Node *node, int value){
 		else if (value > node->value)
 			node = node->right_child;
 		else
-			return(parent);// break faire quelque chose
+			return(NULL);// break faire quelque chose
 	}
-	return (parent);//pareil
+	return (parent);
 }
 
 Node	*getUncle(Node *parent){
@@ -105,8 +105,15 @@ void	fix_properties(Node **root, Node *node){
 	Node *grandparent = 0;
 	Node *parent = node->parent;
 
-	if (!parent || (parent && parent->color == BLACK))
+	if (!parent)
+	{
+		node->color = BLACK;
 		return ;
+	}
+
+	if (parent->color == BLACK)
+		return;
+
 	grandparent = parent->parent;
 	if (!grandparent){
 		parent->color = BLACK;

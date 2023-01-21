@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 10:41:57 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/21 18:17:02 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/21 19:12:25 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ int	main(int argc, char **argv){
 	// std::cout << root->left_child->value << std::endl;
 	// std::cout << root->right_child->value << std::endl;
 	print_tree(root);
-	// std::cout << check_rule_4(root) << std::endl;
+	std::cout << check_rule_4(root) << std::endl;
 }
