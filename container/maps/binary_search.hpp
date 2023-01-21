@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 09:58:02 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/21 19:13:22 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/21 19:53:53 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,17 +165,41 @@ void	addNode(Node **root,int value){
 	fix_properties(root, new_node);
 }
 
-int check_rule_4(Node *root)
+bool	check_rule_1(Node *root){
+	if (root->color == BLACK)
+		return (true);
+	else
+		return (false);
+}
+
+int	check_rule_2(Node *root){
+	if (!root)
+		return (1);
+	int left_child = check_rule_2(root->left_child);
+	int right_child = check_rule_2(root->right_child);
+	if (left_child == -1 || right_child == -1 || (root->color == RED && ((root->left_child && root->left_child->color == RED) || (root->right_child && root->right_child->color == RED))))
+		return (-1);
+	return (1);
+}
+
+int check_rule_3(Node *root)
 {
 	if (!root)
 		return (0);
 	
-	int left_child = check_rule_4(root->left_child);
-	int right_child = check_rule_4(root->right_child);
+	int left_child = check_rule_3(root->left_child);
+	int right_child = check_rule_3(root->right_child);
 	if (left_child == -1 || right_child == -1 || left_child != right_child)
 		return (-1);
 	else
 		return (left_child + (root->color == BLACK ? 1 : 0));
+}
+
+void	check_rules(Node *root){
+	if (check_rule_1(root) && check_rule_2(root) == 1 && check_rule_3(root) >= 1)
+		std::cout <<"[OK]";
+	else
+		std::cout <<"[KO]";
 }
 
 int get_height(Node *root){
