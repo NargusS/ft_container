@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 09:58:02 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/21 19:53:53 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/22 10:03:23 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ class Node{
 		Node		*parent;
 		Node		*left_child;
 		Node		*right_child;
-	Node(bool color, int value, Node *parent):color(color), value(value), parent(parent), left_child(0), right_child(0){};
+	Node(bool color, int value, Node *parent):color(color), value(value), parent(parent), left_child(NULL), right_child(NULL){};
 	~Node(){};
 };
 
@@ -49,7 +49,7 @@ Node	*getUncle(Node *parent){
 		return (grandparent->right_child);
 	else if (grandparent->right_child == parent)
 		return (grandparent->left_child);
-	return (0);
+	return (NULL);
 }
 
 void	left_rotation(Node **root, Node *node){
@@ -101,8 +101,8 @@ void	right_rotation(Node **root, Node *node){
 }
 
 void	fix_properties(Node **root, Node *node){
-	Node *uncle = 0;
-	Node *grandparent = 0;
+	Node *uncle = NULL;
+	Node *grandparent = NULL;
 	Node *parent = node->parent;
 
 	if (!parent)
@@ -220,7 +220,7 @@ int get_height(Node *root){
 void print2DUtil(Node* root, int space)
 {
     // Base case
-    if (root == 0)
+    if (root == NULL)
         return;
  
     // Increase distance between levels
