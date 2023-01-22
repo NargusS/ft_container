@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:25:16 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/22 19:10:11 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/22 21:16:42 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,15 @@ class RBtree{
 		node->right = child->left;
 		if (child->left != TNULL)
 			child->left->parent = node;
-		child->left = node;
-		node->parent = child;
-
+		child->parent = parent;
 		if (!parent)
 			root = child;
 		else if (parent->left == node)
 			parent->left = child;
-		else if (parent->right == node)
+		else
 			parent->right = child;
-
-		if (child)
-			child->parent = parent;
+		child->left = node;
+		node->parent = child;
 	}
 
 	void	rotation_right(Nodeptr node){
@@ -88,20 +85,17 @@ class RBtree{
 		parent = node->parent;
 
 		node->left = child->right;
-		if (child->right)
+		if (child->right != TNULL)
 			child->right->parent = node;
-		child->right = node;
-		node->parent = child;
-
+		child->parent = parent;
 		if (!parent)
 			root = child;
 		else if (parent->left == node)
 			parent->left = child;
-		else if (parent->right == node)
+		else
 			parent->right = child;
-
-		if (child)
-			child->parent = parent;
+		child->right = node;
+		node->parent = child;
 	}
 
 
@@ -197,15 +191,13 @@ class RBtree{
 	void	transplant(Nodeptr node, Nodeptr new_child){
 		Nodeptr	parent = node->parent;
 
-		if (parent && parent->left == node)
-			parent->left = new_child;
-		else if (parent && parent->right == node)
-			parent->right = new_child;
-		else
+		if (parent == NULL)
 			root = new_child;
-		
-		if (new_child)
-			new_child->parent = parent;
+		else if (parent->left == node)
+			parent->left = new_child;
+		else
+			parent->right = new_child;
+		new_child->parent = parent;
 	}
 
 	void deleteFix(Nodeptr x) {
@@ -214,10 +206,10 @@ class RBtree{
 			if (x == x->parent->left) {
 				s = x->parent->right;
 				if (s->color == RED) {
-				s->color = BLACK;
-				x->parent->color = RED;
-				rotation_left(x->parent);
-				s = x->parent->right;
+					s->color = BLACK;
+					x->parent->color = RED;
+					rotation_left(x->parent);
+					s = x->parent->right;
 				}
 
 				if (s->left->color == BLACK && s->right->color == BLACK) {
@@ -344,7 +336,7 @@ class RBtree{
 		std::cout << std::endl;
 		for (int i = 10; i < space; i++)
 			std::cout << " ";
-		std::cout << root->value << "["<< root->color <<"]" << "\n";
+		std::cout << root->value << "["<< (root->color == true ? "R" : "B")<<"]" << "\n";
 	
 		// Process left child
 		print2DUtil(root->left, space);
