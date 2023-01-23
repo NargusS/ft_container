@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:25:16 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/22 21:16:42 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:48:48 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,6 +319,43 @@ class RBtree{
 		}
 	}
 
+	bool	check_rule_1(Node *root){
+		if (root->color == BLACK)
+			return (true);
+		else
+			return (false);
+	}
+
+	int	check_rule_2(Node *root){
+		if (root == TNULL)
+			return (1);
+		int left_child = check_rule_2(root->left);
+		int right_child = check_rule_2(root->right);
+		if (left_child == -1 || right_child == -1 || (root->color == RED && ((root->left->color == RED) || (root->right->color == RED))))
+			return (-1);
+		return (1);
+	}
+
+	int check_rule_3(Node *root)
+	{
+		if (root == TNULL)
+			return (0);
+		
+		int left_child = check_rule_3(root->left);
+		int right_child = check_rule_3(root->right);
+		if (left_child == -1 || right_child == -1 || left_child != right_child)
+			return (-1);
+		else
+			return (left_child + (root->color == BLACK ? 1 : 0));
+	}
+
+	void	check_rules(){
+		if (check_rule_1(root) && check_rule_2(root) == 1 && check_rule_3(root) >= 1)
+			std::cout <<"[OK]" << std::endl;
+		else
+			std::cout <<"[KO]"<< std::endl;
+	}
+
 	void print2DUtil(Nodeptr root, int space)
 	{
 		// Base case
@@ -344,6 +381,20 @@ class RBtree{
 
 	void	print_tree(){
 		print2DUtil(root, 0);
+	}
+
+	void	tree_to_list(Nodeptr node){
+		if (node == TNULL)
+			return;
+		tree_to_list(node->left);
+		std::cout <<"[" << node->value << "] ";
+		tree_to_list(node->right);
+		return;
+	}
+
+	void	test(){
+		tree_to_list(root);
+		std::cout << std::endl;
 	}
 };
 

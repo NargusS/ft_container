@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 10:41:57 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/22 19:03:35 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:30:59 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,12 @@ int	main(int argc, char **argv){
 		rbt.insert(atoi(argv[i]));
 	}
 
+	
+	// rbt.deleteNode(5);
+	// rbt.deleteNode(1);
+	// rbt.deleteNode(2);
+	// rbt.deleteNode(8);
 	rbt.print_tree();
-	rbt.deleteNode(5);
-	rbt.deleteNode(1);
-	rbt.deleteNode(2);
-	rbt.deleteNode(8);
-	std::cout << std::endl;
-	std::cout << std::endl;
-	std::cout << std::endl;
-	std::cout << std::endl;
-	std::cout << std::endl;
-	std::cout << std::endl;
-	rbt.print_tree();
+	rbt.check_rules();
+	rbt.test();
 }
