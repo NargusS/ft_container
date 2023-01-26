@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:49:55 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/26 11:47:30 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/26 15:09:07 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,25 @@
 #include "./binary_search.hpp"
 
 namespace ft{
-	template<class Key,class T,
-    	class Compare = std::less<Key>,class Allocator = std::allocator<ft::pair<const Key, T>>>
+	template <class value_type>
+	class	value_compare : public std::binary_function<value_type, value_type, bool>{
+		protected:
+			Compare _comp;
+		public:
+			value_compare(){};
+			value_compare(Compare	comp):_comp(comp){};
+		bool operator()(const value_type& x, const value_type& y)const {
+			return (comp(x.first, y.first));
+		}
+		bool operator()(const value_type& x, const key_type& y)const {
+			return (comp(x.first, y));
+		}
+		bool operator()(const key_type& x, const value_type& y)const {
+			return (comp(x, y.first));
+		}
+	};
+
+	template<class Key,class T,class Compare = std::less<Key>,class Allocator = std::allocator<ft::pair<const Key, T>>>
 	class map
 	{
 		public:
@@ -39,11 +56,24 @@ namespace ft{
 			typedef	typename ft::reverse_iterator<iterator>	reverse_iterator;
 			typedef	typename ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 		private:
-			RBtree			_tree;
-			size_type		_size;
-			allocator_type	_alloc;
+			key_compare     _key_comp;
+			value_compare   _value_comp;
+			RBtree<value_type, key_type, value_compare, allocator_type>   _tree;
 		public:
-			map();
+			map():_tree(Rbtree()), _size(0), _alloc(allocator_type()), _comp(std::less){};
+			explicit map( const Compare& comp,const Allocator& alloc = Allocator()){
+				_tree = Rbtree();
+				_size = 0;
+				_alloc = allocator_type();
+				_capacity = 0;
+				_comp = comp;
+			}
+
+			template< class InputIt >
+			map( InputIt first, InputIt last,const Compare& comp = Compare(),const Allocator& alloc = Allocator()){
+
+			}
+			map( const map& other );
 			~map();
 			allocator_type	get_allocator() const{
 				return (_alloc);
@@ -81,11 +111,11 @@ namespace ft{
 			}
 
 			key_compare key_comp() const{
-				return (key_compare);
+				return (_key_comp);
 			}
 
 			std::map::value_compare value_comp() const{
-				
+				return(_value_comp);
 			}
 	};
 };
