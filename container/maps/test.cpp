@@ -6,11 +6,11 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 10:41:57 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/26 18:44:19 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:52:01 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./binary_search.hpp"
+#include "./map.hpp"
 #include <iostream>
 #include <cstdlib>
 
@@ -42,19 +42,8 @@
 // 	// check_rules(root);
 // }
 
-int	main(int argc, char **argv){
-	RBtree rbt;
+int	main(){
+	ft::map<std::string, int> test;
 
-	for (int i = 1; i < argc; i++){
-		rbt.insert(atoi(argv[i]));
-	}
-
-	
-	// rbt.deleteNode(5);
-	// rbt.deleteNode(1);
-	// rbt.deleteNode(2);
-	// rbt.deleteNode(8);
-	rbt.print_tree();
-	rbt.check_rules();
-	rbt.test();
+	return (1);
 }

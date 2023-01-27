@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:25:16 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/26 19:12:02 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/27 18:31:18 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,463 +17,468 @@
 #define NULL  0
 #include <iostream>
 #include "./Node.hpp"
+#include "./RBiterator.hpp"
 
 namespace ft{
 
-	template <typename T>
-	struct Node{
-		private:
-			bool	color;
-			T		value;
-			Node	*parent;
-			Node	*left;
-			Node	*right;
-		Node():color(BLACK), parent(NULL), left(NULL), right(NULL){};
-		~Node();
-	};
-
-	template <typename NodePtr>
-	NodePtr get_next_node(NodePtr ptr, NodePtr TNULL) {
-		if (ptr->_right != TNULL)
-			return (get_min_node(ptr->_right, TNULL));
-		while (!is_left_child(ptr))
-			ptr = ptr->_parent;
-		return (ptr->_parent);
-	}
-	template <typename NodePtr>
-	NodePtr get_prev_node(NodePtr ptr, NodePtr TNULL) {
-		if (ptr->_left != TNULL)
-			return (get_max_node(ptr->_left, TNULL));
-		while (!is_right_child(ptr))
-			ptr = ptr->_parent;
-		return (ptr->_parent);
-	}
-
-	template <typename U, typename V>
-	class RBtree_iterator {
-
-		public:
-			typedef U                                                           value_type;
-			typedef value_type*                                                 pointer;
-			typedef value_type&                                                 reference;
-			typedef V*                                                          iterator_type;
-			typedef typename iterator_traits<iterator_type>::difference_type    difference_type;
-			typedef typename iterator_traits<iterator_type>::value_type         node_type;
-			typedef typename iterator_traits<iterator_type>::pointer            node_pointer;
-			typedef typename iterator_traits<iterator_type>::reference          node_reference;
-			typedef typename iterator_traits<iterator_type>::iterator_category  iterator_category;
-
-		private:
-			node_pointer  _current;
-			node_pointer  _nil;
-
-		public:
-			tree_iterator() : _current(NULL), _nil(NULL) {}
-			tree_iterator(node_pointer cur, node_pointer nil) : _current(cur), _nil(nil) {}
-			tree_iterator(const tree_iterator& ref) : _current(ref._current), _nil(ref._nil) {}
-			~tree_iterator() {}
-
-			tree_iterator& operator=(const tree_iterator& ref) {
-				if (this != &ref) {
-					_current = ref._current;
-					_nil = ref._nil;
-				}
-				return (*this);
-			}
-
-			node_pointer base()       const { return (_current); }
-			pointer      operator->() const { return (&_current->_value); }
-			reference    operator*()  const { return (_current->_value); }
-
-			tree_iterator& operator++() {
-				_current = get_next_node(_current, _nil);
-				return (*this);
-			}
-			tree_iterator operator++(int) {
-				tree_iterator tmp(*this);
-				++(*this);
-				return (tmp);
-			}
-
-			tree_iterator& operator--() {
-				_current = get_prev_node(_current, _nil);
-				return (*this);
-			}
-			tree_iterator operator--(int) {
-				tree_iterator tmp(*this);
-				--(*this);
-				return (tmp);
-			}
-
-			template <typename T>
-			bool operator==(const tree_iterator<T, node_type>& x) const {
-				return (_current == x.base());
-			}
-			template <typename T>
-			bool operator!=(const tree_iterator<T, node_type>& x) const {
-				return !(*this == x);
-			}
-
-			operator tree_iterator<const value_type, node_type>(void) const {
-				return (tree_iterator<const value_type, node_type>(_current, _nil));
-			}
-
-			// ---------------------------------------------/
-			friend bool operator==(const tree_iterator& lhs, const tree_iterator& rhs) {
-				return (lhs._current == rhs._current);
-			}
-			// ---------------------------------------------/
-			friend bool operator!=(const tree_iterator& lhs, const tree_iterator& rhs) {
-				return (!(lhs == rhs));
-			}
-  	};
-
-	template <class Key, class T, class Compare, class Allocator>
+	template <class Value, class Compare, class Allocator>
 	class RBtree{
 		public:
-			typedef Key			key_type;
-			typedef T			value_type;
+			typedef Value				value_type;
+			typedef typename value_type::first_type	key_type;
 			typedef Compare		value_compare;
 			typedef Allocator	allocator_type;
-			typedef	tree_iterator<value_type, Node<value_type>> iterator;
-			typedef	tree_iterator<const value_type, Node<value_type>> iterator;
-			typedef std::size_t   	size_type;
-			typedef std::ptrdiff_t	difference_type;
-			typedef Node*		Nodeptr;
+			typedef	Node<value_type>	node_type;
+			typedef typename allocator_type::size_type   	size_type;
+			typedef	RBiterator<value_type, node_type> iterator;
+			typedef	node_type*	Nodeptr;
 		private:
-			Nodeptr	root;
-			Nodeptr	begin;
-			Nodeptr	end;
-			Nodeptr	TNULL;
-			Compare _comp;
-			allocator_type alloc;
+			allocator_type _alloc;
+			Nodeptr	_TNULL;
+			Nodeptr	_root;
+			Nodeptr	_begin;
+			Nodeptr	_end;
+			value_compare _comp;
+			size_type	_size;
 			
 		public:
-		
-		RBtree(): _comp(std::less<value_type>), alloc(allocator_type()){
-			TNULL = alloc.allocate(1);
-			TNULL->color = BLACK;
-			TNULL->left = NULL;
-			TNULL->right = NULL;
-			root = TNULL;
-			begin = TNULL;
-			end = TNULL;
-		};
+			RBtree(value_compare const& comp, allocator_type const& alloc):
+				_alloc(alloc),
+				_TNULL(create_TNULL()),
+				_root(_TNULL),
+				_begin(_TNULL),
+				_end(_TNULL),
+				_comp(comp),
+				_size(0)
+			{}
 
-		RBtree(Compare &comp, Allocator&allocate):_comp(comp), alloc(allocate){
-			TNULL = alloc.allocate(1);
-			TNULL->color = BLACK;
-			TNULL->left = NULL;
-			TNULL->right = NULL;
-			root = TNULL;
-			begin = TNULL;
-			end = TNULL;
-		};
+			RBtree(RBtree const& other):
+				_alloc(other._alloc),
+				_TNULL(create_TNULL()),
+				_root(_TNULL),
+				_begin(_TNULL),
+				_end(_TNULL),
+				_comp(other.comp),
+				_size(other._size)
+			{
+				_root = copy_tree(other, _TNULL);
+			}
 
-		template <class InputIt>
-		RBtree(InputIt first, InputIt last, Compare &comp, Allocator&allocate){
-			alloc = allocate;
-			_comp = comp;
-			TNULL = alloc.allocate(1);
-			TNULL->color = BLACK;
-			TNULL->left = NULL;
-			TNULL->right = NULL;
-			root = TNULL;
-			begin = TNULL;
-			end = TNULL;
-		};
+
 	
-		~RBtree(){};
-		Nodeptr	SearchParent(value_type& value){
-			Nodeptr	tmp = root;
-			Nodeptr	parent = NULL;
+			~RBtree(){};
 
-			while (tmp != TNULL){
-				parent = tmp;
-				if (_comp(value, tmp->value))
-					tmp = tmp->left;
-				else if (!_comp(value, tmp->value))
-					tmp = tmp->right;
-			}
-			return (parent);
-		}
-
-		Nodeptr	minimum(Nodeptr root){
-			Nodeptr	tmp= root;
-
-			while (tmp->left != TNULL)
-				tmp = tmp->left;
-			return(tmp);
-		}
-
-		Nodeptr	maximum(Nodeptr root){
-			Nodeptr	tmp= root;
-
-			while (tmp->right != TNULL)
-				tmp = tmp->right;
-			return(tmp);
-		}
-
-		void	rotation_left(Nodeptr node){
-			Nodeptr	parent;
-			Nodeptr	child;
-
-			child = node->right;
-			parent = node->parent;
-
-			node->right = child->left;
-			if (child->left != TNULL)
-				child->left->parent = node;
-			child->parent = parent;
-			if (!parent)
-				root = child;
-			else if (parent->left == node)
-				parent->left = child;
-			else
-				parent->right = child;
-			child->left = node;
-			node->parent = child;
-		}
-
-		void	rotation_right(Nodeptr node){
-			Nodeptr	parent;
-			Nodeptr	child;
-
-			child = node->left;
-			parent = node->parent;
-
-			node->left = child->right;
-			if (child->right != TNULL)
-				child->right->parent = node;
-			child->parent = parent;
-			if (!parent)
-				root = child;
-			else if (parent->left == node)
-				parent->left = child;
-			else
-				parent->right = child;
-			child->right = node;
-			node->parent = child;
-		}
-
-
-		Nodeptr	getUncle(Nodeptr parent){
-			Nodeptr grandparent = parent->parent;
-
-			if (grandparent->left == parent)
-				return (grandparent->right);
-			else if (grandparent->right == parent)
-				return (grandparent->left);
-			return (NULL);
-		}
-
-		void	insert(value_type& value){
-			Nodeptr new_node = new Node;
-			Nodeptr	parent = NULL;
-
-			new_node->color = RED;
-			new_node->left = TNULL;
-			new_node->right = TNULL;
-			new_node->value = value;
-			new_node->parent = NULL;
-
-			if (root == TNULL){
-				new_node->color = BLACK;
-				root = new_node;
-				return;
-			}
-			parent = SearchParent(value);
-			new_node->parent = parent;
-			if (_comp(value,parent->value))
-				parent->left = new_node;
-			else
-				parent->right = new_node;
-			fix_properties(new_node);
-			begin = minimum(root);
-			end = maximum(root);
-		}
-
-		void	fix_properties(Nodeptr	node){
-			Nodeptr	parent = node->parent;
-			Nodeptr	uncle= NULL;
-			Nodeptr	grandparent = NULL;
-
-			if (!parent){
-				node->color = BLACK;
-				return ;
+			node_type* root() const
+			{
+				return _root;
 			}
 
-			if (parent->color== BLACK)
-				return;
+			node_type* begin() const
+			{
+				return _begin;
+			}
+
+			node_type* end() const
+			{
+				return _end;
+			}
+
+			value_compare const& comp() const
+			{
+				return _comp;
+			}
+
+			size_type size() const
+			{
+				return _size;
+			}
+
+			void	erase_tree(Nodeptr root){
+				if (root != _TNULL)
+					return;
+				erase_tree(root->left);
+				erase_tree(root->right);
+				root->deleteNode(root->value);
+			}
+
+			void	clear(){
+				erase_tree(_root);
+				_size = 0;
+				_root = _TNULL;
+				_begin = _TNULL;
+				_end = _TNULL;
+			}
 			
-			grandparent = parent->parent;
-			if (!grandparent){
-				parent->color = BLACK;
-				root = parent;
-				return;
+			Nodeptr	create_TNULL(){
+				Nodeptr new_node;
+
+				new_node = _alloc.allocate(1);
+				_alloc.construct(new_node, node_type());
+				return (new_node);
 			}
-			uncle = getUncle(parent);
-			if (uncle && uncle->color == RED){
-				parent->color = BLACK;
-				grandparent->color = RED;
-				uncle->color = BLACK;
-				fix_properties(grandparent);
-			}
-			else if (parent == grandparent->left){
-				if (node == parent->right){
-					rotation_left(parent);
-					parent = node;
+
+			RBtree&	operator=(RBtree const& other){
+				if (this != &other){
+					clear();
+					_root = copy_tree(other, other._root, _TNULL);
+					_size = other._size;
 				}
-				rotation_right(grandparent);
-
-				parent->color = BLACK;
-				grandparent->color = RED;
+				return (*this);
 			}
-			else{
-				if (node == parent->left) {
-					rotation_right(parent);
-					parent = node;
+
+			Nodeptr	SearchParent(value_type& value){
+				Nodeptr	tmp = _root;
+				Nodeptr	parent = NULL;
+
+				while (tmp != _TNULL){
+					parent = tmp;
+					if (_comp(value, tmp->value))
+						tmp = tmp->left;
+					else if (!_comp(value, tmp->value))
+						tmp = tmp->right;
 				}
-				rotation_left(grandparent);
-				parent->color = BLACK;
-				grandparent->color = RED;	
+				return (parent);
 			}
-		}
 
-		void	transplant(Nodeptr node, Nodeptr new_child){
-			Nodeptr	parent = node->parent;
+			Nodeptr	minimum(Nodeptr root){
+				Nodeptr	tmp= root;
 
-			if (parent == NULL)
-				root = new_child;
-			else if (parent->left == node)
-				parent->left = new_child;
-			else
-				parent->right = new_child;
-			new_child->parent = parent;
-		}
+				while (tmp->left != _TNULL)
+					tmp = tmp->left;
+				return(tmp);
+			}
 
-		void deleteFix(Nodeptr x) {
-			Nodeptr s;
-			while (x != root && x->color == BLACK) {
-				if (x == x->parent->left) {
-					s = x->parent->right;
-					if (s->color == RED) {
-						s->color = BLACK;
-						x->parent->color = RED;
-						rotation_left(x->parent);
-						s = x->parent->right;
+			Nodeptr	maximum(Nodeptr root){
+				Nodeptr	tmp= root;
+
+				while (tmp->right != _TNULL)
+					tmp = tmp->right;
+				return(tmp);
+			}
+
+			void	rotation_left(Nodeptr node){
+				Nodeptr	parent;
+				Nodeptr	child;
+
+				child = node->right;
+				parent = node->parent;
+
+				node->right = child->left;
+				if (child->left != _TNULL)
+					child->left->parent = node;
+				child->parent = parent;
+				if (!parent)
+					_root = child;
+				else if (parent->left == node)
+					parent->left = child;
+				else
+					parent->right = child;
+				child->left = node;
+				node->parent = child;
+			}
+
+			void	rotation_right(Nodeptr node){
+				Nodeptr	parent;
+				Nodeptr	child;
+
+				child = node->left;
+				parent = node->parent;
+
+				node->left = child->right;
+				if (child->right != _TNULL)
+					child->right->parent = node;
+				child->parent = parent;
+				if (!parent)
+					_root = child;
+				else if (parent->left == node)
+					parent->left = child;
+				else
+					parent->right = child;
+				child->right = node;
+				node->parent = child;
+			}
+
+
+			Nodeptr	getUncle(Nodeptr parent){
+				Nodeptr grandparent = parent->parent;
+
+				if (grandparent->left == parent)
+					return (grandparent->right);
+				else if (grandparent->right == parent)
+					return (grandparent->left);
+				return (NULL);
+			}
+
+			ft::pair<iterator, bool>	insert(value_type& value){
+				Nodeptr new_node = NULL;
+				Nodeptr	parent = NULL;
+
+				parent = SearchParent(value);
+				if (parent == _TNULL){
+					new_node = _alloc.allocate(1);
+					_alloc.construct(new_node, node_type(parent, value));
+					new_node->left = _TNULL;
+					new_node->right = _TNULL;
+					new_node->color = BLACK;
+					_root = new_node;
+					return (ft::make_pair(iterator(new_node), true));
+				}
+				else if (parent->value == value)
+					return (ft::make_pair(iterator(parent), false)); // TO DO verifier
+
+				
+				new_node = _alloc.allocate(1);
+				_alloc.construct(new_node, node_type(parent, value));
+				new_node->left = _TNULL;
+				new_node->right = _TNULL;
+				if (_comp(value,parent->value))
+					parent->left = new_node;
+				else
+					parent->right = new_node;
+				fix_properties(new_node);
+				_begin = minimum(_root);
+				_end = maximum(_root);
+				_size++;
+				return (ft::make_pair(iterator(new_node), true));
+			}
+
+			void	fix_properties(Nodeptr	node){
+				Nodeptr	parent = node->parent;
+				Nodeptr	uncle= NULL;
+				Nodeptr	grandparent = NULL;
+
+				if (!parent){
+					node->color = BLACK;
+					return ;
+				}
+
+				if (parent->color== BLACK)
+					return;
+				
+				grandparent = parent->parent;
+				if (!grandparent){
+					parent->color = BLACK;
+					_root = parent;
+					return;
+				}
+				uncle = getUncle(parent);
+				if (uncle && uncle->color == RED){
+					parent->color = BLACK;
+					grandparent->color = RED;
+					uncle->color = BLACK;
+					fix_properties(grandparent);
+				}
+				else if (parent == grandparent->left){
+					if (node == parent->right){
+						rotation_left(parent);
+						parent = node;
 					}
+					rotation_right(grandparent);
 
-					if (s->left->color == BLACK && s->right->color == BLACK) {
-						s->color = RED;
-						x = x->parent;
-					} 
-					else {
-						if (s->right->color == BLACK) {
-							s->left->color = BLACK;
-							s->color = RED;
-							rotation_right(s);
+					parent->color = BLACK;
+					grandparent->color = RED;
+				}
+				else{
+					if (node == parent->left) {
+						rotation_right(parent);
+						parent = node;
+					}
+					rotation_left(grandparent);
+					parent->color = BLACK;
+					grandparent->color = RED;	
+				}
+			}
+
+			void	transplant(Nodeptr node, Nodeptr new_child){
+				Nodeptr	parent = node->parent;
+
+				if (parent == NULL)
+					_root = new_child;
+				else if (parent->left == node)
+					parent->left = new_child;
+				else
+					parent->right = new_child;
+				new_child->parent = parent;
+			}
+
+			void deleteFix(Nodeptr x) {
+				Nodeptr s;
+				while (x != _root && x->color == BLACK) {
+					if (x == x->parent->left) {
+						s = x->parent->right;
+						if (s->color == RED) {
+							s->color = BLACK;
+							x->parent->color = RED;
+							rotation_left(x->parent);
 							s = x->parent->right;
 						}
-						s->color = x->parent->color;
-						x->parent->color = BLACK;
-						s->right->color = BLACK;
-						rotation_left(x->parent);
-						x = root;
-					}
-				} 
-				else {
-					s = x->parent->left;
-					if (s->color == RED) {
-						s->color = BLACK;
-						x->parent->color = RED;
-						rotation_right(x->parent);
-						s = x->parent->left;
-					}
 
-					if (s->right->color == BLACK && s->right->color == BLACK) {
-						s->color = RED;
-						x = x->parent;
+						if (s->left->color == BLACK && s->right->color == BLACK) {
+							s->color = RED;
+							x = x->parent;
+						} 
+						else {
+							if (s->right->color == BLACK) {
+								s->left->color = BLACK;
+								s->color = RED;
+								rotation_right(s);
+								s = x->parent->right;
+							}
+							s->color = x->parent->color;
+							x->parent->color = BLACK;
+							s->right->color = BLACK;
+							rotation_left(x->parent);
+							x = _root;
+						}
 					} 
 					else {
-						if (s->left->color == BLACK) {
-							s->right->color = BLACK;
-							s->color = RED;
-							rotation_left(s);
+						s = x->parent->left;
+						if (s->color == RED) {
+							s->color = BLACK;
+							x->parent->color = RED;
+							rotation_right(x->parent);
 							s = x->parent->left;
 						}
 
-						s->color = x->parent->color;
-						x->parent->color = BLACK;
-						s->left->color = BLACK;
-						rotation_right(x->parent);
-						x = root;
+						if (s->right->color == BLACK && s->right->color == BLACK) {
+							s->color = RED;
+							x = x->parent;
+						} 
+						else {
+							if (s->left->color == BLACK) {
+								s->right->color = BLACK;
+								s->color = RED;
+								rotation_left(s);
+								s = x->parent->left;
+							}
+
+							s->color = x->parent->color;
+							x->parent->color = BLACK;
+							s->left->color = BLACK;
+							rotation_right(x->parent);
+							x = _root;
+						}
 					}
 				}
+				x->color = BLACK;
 			}
-			x->color = BLACK;
-		}
 
-		void	deleteNode(value_type& value){
-			Nodeptr	tmp = root;
-			Nodeptr	node = TNULL;
-			Nodeptr	min, fix;
-			bool		og_color;
-			
-			while (tmp != TNULL){
-				if (!_comp(tmp->value, value) && !_comp(value, tmp->value)) {
-					node = tmp;
+			void	deleteNode(value_type& value){
+				Nodeptr	tmp = _root;
+				Nodeptr	node = _TNULL;
+				Nodeptr	min, fix;
+				bool		og_color;
+				
+				while (tmp != _TNULL){
+					if (!_comp(tmp->value, value) && !_comp(value, tmp->value)) {
+						node = tmp;
+					}
+
+					if (_comp(tmp->value, value) || (!_comp(tmp->value, value) && !_comp(value, tmp->value))) {
+						tmp = tmp->right;
+					} else {
+						tmp = tmp->left;
+					}
 				}
 
-				if (_comp(tmp->value, value) || (!_comp(tmp->value, value) && !_comp(value, tmp->value))) {
-					tmp = tmp->right;
-				} else {
-					tmp = tmp->left;
+				if (node == _TNULL){
+					std::cout << "NO FOUND" << std::endl;
+					return;
 				}
-			}
 
-			if (node == TNULL){
-				std::cout << "NO FOUND" << std::endl;
-				return;
-			}
-
-			min = node;
-			og_color = min->color;
-			if (node->left == TNULL) {
-				fix = node->right;
-				transplant(node, node->right);
-			} 
-			else if (node->right == TNULL) {
-				fix = node->left;
-				transplant(node, node->left);
-			}
-			else {
-				min = minimum(node->right);
+				min = node;
 				og_color = min->color;
-				fix = min->right;
-				if (min->parent == node) {
-					fix->parent = min;
+				if (node->left == _TNULL) {
+					fix = node->right;
+					transplant(node, node->right);
 				} 
-				else {
-					transplant(min, min->right);
-					min->right = node->right;
-					min->right->parent = min;
+				else if (node->right == _TNULL) {
+					fix = node->left;
+					transplant(node, node->left);
 				}
+				else {
+					min = minimum(node->right);
+					og_color = min->color;
+					fix = min->right;
+					if (min->parent == node) {
+						fix->parent = min;
+					} 
+					else {
+						transplant(min, min->right);
+						min->right = node->right;
+						min->right->parent = min;
+					}
 
-				transplant(node, min);
-				min->left = node->left;
-				min->left->parent = min;
-				min->color = node->color;
-			}
-			delete node;
-			if (og_color == BLACK) {
-				deleteFix(fix);
-			}
-			begin = minimum(root);
-			end = maximum(root);
-		}
+					transplant(node, min);
+					min->left = node->left;
+					min->left->parent = min;
+					min->color = node->color;
+				}
+				_alloc.destroy(node);
+				_alloc.deallocate(node, 1);
 
-		// bool	check_rule_1(Node *root){
+				if (og_color == BLACK) {
+					deleteFix(fix);
+				}
+				_begin = minimum(_root);
+				_end = maximum(_root);
+				--_size;
+			}
+
+			void	swap(RBtree &other)
+			{
+				RBtree tmp;
+
+				tmp._alloc = this->_alloc;
+				tmp._comp = this->_comp;
+				tmp._size = this->_size;
+				tmp._root = this->_root;
+				tmp._begin = this->_begin;
+				tmp._end = this->_end;
+				tmp._TNULL = this->_TNULL;
+
+				this->_alloc = other._alloc;
+				this->_comp = other._comp;
+				this->_size = other._size;
+				this->_root = other._root;
+				this->_begin = other._begin;
+				this->_end = other._end;
+				this->_TNULL = other._TNULL;
+
+				other._alloc = tmp._alloc;
+				other._comp = tmp._comp;
+				other._size = tmp._size;
+				other._root = tmp._root;
+				other._begin = tmp._begin;
+				other._end = tmp._end;
+				other._TNULL = tmp._TNULL;
+			}
+
+			allocator_type	get_allocator() const{
+				return (_alloc);
+			}
+
+			Nodeptr	copy_tree(const RBtree& other, Nodeptr current_node,Nodeptr parent){
+				Nodeptr new_node;
+
+				if (current_node == _TNULL)
+					return (_TNULL);
+				
+				new_node = _alloc.allocate(1);
+				_alloc.construct(new_node, node_type(parent, _root->pair));
+
+				if (current_node == other._begin)
+					_begin = new_node;
+				if (current_node == other._end)
+					_end = new_node;
+				if (current_node == other.current_node)
+					_root = new_node;
+				new_node->left = copy_tree(other, current_node->left, new_node);
+				new_node->right = copy_tree(other, current_node->right, new_node);
+				new_node->color = current_node->color;
+				return (new_node);
+			}
+		// bool	check_rule_1(Node *_root){
 		// 	if (root->color == BLACK)
 		// 		return (true);
 		// 	else
