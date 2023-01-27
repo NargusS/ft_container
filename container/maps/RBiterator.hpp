@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:12:42 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/27 16:03:00 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/27 19:24:26 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,26 +49,26 @@ namespace ft{
 
 			reference operator*()
 			{
-				return this->_node->pair;
+				return this->_node->value;
 			}
 
 			const_reference operator*() const
 			{
-				return this->_node->pair;
+				return this->_node->value;
 			}
 
 			pointer operator->()
 			{
-				return &this->_node->pair;
+				return &this->_node->value;
 			}
 
 			const_pointer operator->() const
 			{
-				return &this->_node->pair;
+				return &this->_node->value;
 			}
 
 			RBiterator&	operator++(){
-				if (!(_node->right->is_null())){
+				if (!_node->is_null() && !(_node->right->is_null())){
 					_node = _node->right;
 					while (!(_node->left->is_null()))
 						_node = _node->left;
@@ -88,7 +88,7 @@ namespace ft{
 			}
 
 			RBiterator&	operator--(){
-				if (!(_node->left->is_null())){
+				if (!_node->is_null() && !(_node->left->is_null())){
 					_node = _node->left;
 					while (!(_node->right->is_null()))
 						_node = _node->right;

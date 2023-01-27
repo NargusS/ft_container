@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:25:16 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/27 18:31:18 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/27 19:12:58 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,15 @@ namespace ft{
 			}
 
 
-	
+			RBtree&	operator=(RBtree const& other){
+				if (this != &other){
+					clear();
+					_root = copy_tree(other, other._root, _TNULL);
+					_size = other._size;
+				}
+				return (*this);
+			}
+
 			~RBtree(){};
 
 			node_type* root() const
@@ -117,18 +125,9 @@ namespace ft{
 				return (new_node);
 			}
 
-			RBtree&	operator=(RBtree const& other){
-				if (this != &other){
-					clear();
-					_root = copy_tree(other, other._root, _TNULL);
-					_size = other._size;
-				}
-				return (*this);
-			}
-
-			Nodeptr	SearchParent(value_type& value){
+			Nodeptr	SearchParent(const value_type& value){
 				Nodeptr	tmp = _root;
-				Nodeptr	parent = NULL;
+				Nodeptr	parent = tmp;
 
 				while (tmp != _TNULL){
 					parent = tmp;
@@ -136,6 +135,8 @@ namespace ft{
 						tmp = tmp->left;
 					else if (!_comp(value, tmp->value))
 						tmp = tmp->right;
+					else
+						return (NULL);
 				}
 				return (parent);
 			}
@@ -209,7 +210,7 @@ namespace ft{
 				return (NULL);
 			}
 
-			ft::pair<iterator, bool>	insert(value_type& value){
+			ft::pair<iterator, bool>	insert(const value_type& value){
 				Nodeptr new_node = NULL;
 				Nodeptr	parent = NULL;
 

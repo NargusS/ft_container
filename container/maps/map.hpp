@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:49:55 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/27 18:19:14 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/27 19:13:41 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,8 @@ namespace ft{
 				return (_tree.get_allocator().max_size());
 			}
 
-			std::pair<iterator, bool> insert( const value_type& value ){
-				return (_tree->insert(value));
+			ft::pair<iterator, bool> insert( const value_type& value ){
+				return (_tree.insert(value));
 			}
 
 			iterator insert (iterator position, const value_type& val){

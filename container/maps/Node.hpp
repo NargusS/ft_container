@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:14:37 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/27 18:13:20 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/27 19:23:17 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ namespace ft{
 		Node<Pair>	*right;
 		public:
 			Node():color(BLACK), value(), parent(NULL), left(NULL), right(NULL){};
-			Node(const Node<Pair>*parent, const Pair& new_pair):color(RED), value(new_pair), parent(parent), left(NULL), right(NULL){};
+			Node(Node<Pair>*parent, const Pair& new_pair):color(RED), value(new_pair), parent(parent), left(NULL), right(NULL){};
 			Node(const Node<Pair>& other):color(other.color), value(other.value), parent(other.parent), left(other.left), right(other.right){};
 
 			Node<Pair>&	operator=(const Node<Pair>& other){
@@ -39,7 +39,7 @@ namespace ft{
 			~Node(){};
 
 			bool is_null(){
-				return (parent == NULL && left == 0 && right == 0);
+				return (parent == NULL && left == NULL && right == NULL);
 			}
 
 			void	swap(Node&	other){

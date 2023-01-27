@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 10:41:57 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/27 15:52:01 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/27 19:18:21 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,18 @@
 // 	// check_rules(root);
 // }
 
-int	main(){
+int	main(int argc, char **argv){
 	ft::map<std::string, int> test;
 
+	for (int i = 1; i < argc - 1; i++){
+		// std::cout << argv[i] << " "<< argv[i + 1]<< std::endl;
+		test[argv[i]] = atoi(argv[i+1]);
+		// std::cout << argv[i] << " "<< argv[i + 1]<< std::endl;
+	}
+
+	ft::map<std::string, int>::iterator it = test.begin();
+	for (; it != test.end(); it++){
+		std::cout << (*it).first << "|" << (*it).second << std::endl;
+	}
 	return (1);
 }
