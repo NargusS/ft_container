@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:12:42 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/28 18:29:42 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/29 12:33:17 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ namespace ft{
 						_node = _node->left;
 				}
 				else{
-					while (_node->parent != NULL && !_node->parent->right)
+					while (_node->parent != NULL && _node == _node->parent->right)
 						_node = _node->parent;
 					_node = _node->parent;
 				}
@@ -89,13 +89,13 @@ namespace ft{
 			}
 
 			RBiterator&	operator--(){
-				if (!_node->is_null() && !(_node->left->is_null())){
+				if (!(_node->left->is_null())){
+					_node = _node->left;
 					while (!(_node->right->is_null()))
 						_node = _node->right;
-					_node = _node->left;
 				}
 				else{
-					while (_node->parent && !_node->parent->left->is_null())
+					while (_node->parent != NULL && _node == _node->parent->left)
 						_node = _node->parent;
 					_node = _node->parent;
 				}
