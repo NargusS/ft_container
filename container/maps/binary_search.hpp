@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:25:16 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/27 19:12:58 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/28 17:05:59 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define	BINARY_SEARCH_HPP
 #define BLACK false
 #define RED   true
-#define NULL  0
+// #define NULL  0
 #include <iostream>
 #include "./Node.hpp"
 #include "./RBiterator.hpp"
@@ -144,7 +144,7 @@ namespace ft{
 			Nodeptr	minimum(Nodeptr root){
 				Nodeptr	tmp= root;
 
-				while (tmp->left != _TNULL)
+				while (tmp->left && tmp->left != _TNULL)
 					tmp = tmp->left;
 				return(tmp);
 			}
@@ -152,7 +152,7 @@ namespace ft{
 			Nodeptr	maximum(Nodeptr root){
 				Nodeptr	tmp= root;
 
-				while (tmp->right != _TNULL)
+				while (tmp->right && tmp->right != _TNULL)
 					tmp = tmp->right;
 				return(tmp);
 			}
@@ -217,16 +217,15 @@ namespace ft{
 				parent = SearchParent(value);
 				if (parent == _TNULL){
 					new_node = _alloc.allocate(1);
-					_alloc.construct(new_node, node_type(parent, value));
+					_alloc.construct(new_node, node_type(NULL, value));
 					new_node->left = _TNULL;
 					new_node->right = _TNULL;
 					new_node->color = BLACK;
 					_root = new_node;
 					return (ft::make_pair(iterator(new_node), true));
 				}
-				else if (parent->value == value)
+				else if (!_comp(value,parent->value) && !_comp(parent->value, value))
 					return (ft::make_pair(iterator(parent), false)); // TO DO verifier
-
 				
 				new_node = _alloc.allocate(1);
 				_alloc.construct(new_node, node_type(parent, value));
@@ -245,7 +244,7 @@ namespace ft{
 
 			void	fix_properties(Nodeptr	node){
 				Nodeptr	parent = node->parent;
-				Nodeptr	uncle= NULL;
+				Nodeptr	uncle = NULL;
 				Nodeptr	grandparent = NULL;
 
 				if (!parent){
@@ -263,7 +262,7 @@ namespace ft{
 					return;
 				}
 				uncle = getUncle(parent);
-				if (uncle && uncle->color == RED){
+				if (uncle && uncle != _TNULL && uncle->color == RED){
 					parent->color = BLACK;
 					grandparent->color = RED;
 					uncle->color = BLACK;
@@ -516,32 +515,51 @@ namespace ft{
 		// 		std::cout <<"[KO]"<< std::endl;
 		// }
 
-		// void print2DUtil(Nodeptr root, int space)
-		// {
-		// 	// Base case
-		// 	if (root == TNULL)
-		// 		return;
+		void print2DUtil(Nodeptr root, int space)
+		{
+			// Base case
+			if (root == _TNULL)
+				return;
 		
-		// 	// Increase distance between levels
-		// 	space += 10;
+			// Increase distance between levels
+			space += 10;
 		
-		// 	// Process right child first
-		// 	print2DUtil(root->right, space);
+			// Process right child first
+			print2DUtil(root->right, space);
 		
-		// 	// Print current node after space
-		// 	// count
-		// 	std::cout << std::endl;
-		// 	for (int i = 10; i < space; i++)
-		// 		std::cout << " ";
-		// 	std::cout << root->value << "["<< (root->color == true ? "R" : "B")<<"]" << "\n";
+			// Print current node after space
+			// count
+			std::cout << std::endl;
+			for (int i = 10; i < space; i++)
+				std::cout << " ";
+			std::cout << root->value.first << "["<< (root->color == true ? "R" : "B")<<"]" << "\n";
 		
-		// 	// Process left child
-		// 	print2DUtil(root->left, space);
-		// }
+			// Process left child
+			print2DUtil(root->left, space);
+		}
 
-		// void	print_tree(){
-		// 	print2DUtil(root, 0);
-		// }
+		void	print_tree(){
+			print2DUtil(_root, 0);
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl;
+		}
 
 		// void	tree_to_list(Nodeptr node){
 		// 	if (node == TNULL)

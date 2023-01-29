@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:12:42 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/27 19:24:26 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/28 18:29:42 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,25 @@ namespace ft{
 			template< class _Pair, class _Node >
 			RBiterator& operator=(RBiterator< _Pair const, _Node > const& x)
 			{
-				if (this != &x)
+				if (this != &x){
 					this->_node = x._node;
+				}
 				return *this;
 			}
 
 			Node* base() const
 			{
-				return this->_node;
+				return _node;
 			}
 
 			reference operator*()
 			{
-				return this->_node->value;
+				return _node->value;
 			}
 
 			const_reference operator*() const
 			{
-				return this->_node->value;
+				return _node->value;
 			}
 
 			pointer operator->()
@@ -68,13 +69,13 @@ namespace ft{
 			}
 
 			RBiterator&	operator++(){
-				if (!_node->is_null() && !(_node->right->is_null())){
+				if (!(_node->right->is_null())){
 					_node = _node->right;
 					while (!(_node->left->is_null()))
 						_node = _node->left;
 				}
 				else{
-					while (!_node->parent && !_node->parent->right->is_null())
+					while (_node->parent != NULL && !_node->parent->right)
 						_node = _node->parent;
 					_node = _node->parent;
 				}
@@ -89,12 +90,12 @@ namespace ft{
 
 			RBiterator&	operator--(){
 				if (!_node->is_null() && !(_node->left->is_null())){
-					_node = _node->left;
 					while (!(_node->right->is_null()))
 						_node = _node->right;
+					_node = _node->left;
 				}
 				else{
-					while (!_node->parent && !_node->parent->left->is_null())
+					while (_node->parent && !_node->parent->left->is_null())
 						_node = _node->parent;
 					_node = _node->parent;
 				}
