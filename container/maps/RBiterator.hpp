@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:12:42 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 14:43:38 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 17:01:03 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ namespace ft{
 						_node = _node->left;
 				}
 				else{
-					while (_node->parent != NULL && _node == _node->parent->right)
+					while (!_node->parent->is_null() && _node == _node->parent->right)
 						_node = _node->parent;
 					_node = _node->parent;
 				}
@@ -95,7 +95,7 @@ namespace ft{
 						_node = _node->right;
 				}
 				else{
-					while (_node->parent != NULL && _node == _node->parent->left)
+					while (!_node->parent->is_null() && _node == _node->parent->left)
 						_node = _node->parent;
 					_node = _node->parent;
 				}

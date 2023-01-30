@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:49:55 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 14:36:33 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 17:05:41 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,11 @@ namespace ft{
 			}
 
 			iterator	end(){
-				return (iterator(_tree.end()));
+				return (iterator(_tree.nil()));
 			}
 
 			const_iterator	end()const{
-				return (const_iterator(_tree.end()));
+				return (const_iterator(_tree.nil()));
 			}
 
 			reverse_iterator	rbegin(){

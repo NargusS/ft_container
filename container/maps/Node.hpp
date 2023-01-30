@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:14:37 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/27 19:23:17 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 17:02:52 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ namespace ft{
 
 			~Node(){};
 
-			bool is_null(){
-				return (parent == NULL && left == NULL && right == NULL);
+			bool is_null() const{
+				return (parent == NULL);
 			}
 
 			void	swap(Node&	other){

@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:25:16 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 13:19:55 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 18:02:37 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,11 @@ namespace ft{
 				return (*this);
 			}
 
-			~RBtree(){};
+			~RBtree(){
+				clear();
+				_alloc.destroy(_TNULL);
+				_alloc.deallocate(_TNULL, 1);
+			};
 
 			node_type* root() const
 			{
@@ -90,6 +94,10 @@ namespace ft{
 				return _end;
 			}
 
+			node_type* nil() const{
+				return _TNULL;
+			}
+
 			value_compare const& comp() const
 			{
 				return _comp;
@@ -100,20 +108,14 @@ namespace ft{
 				return _size;
 			}
 
-			void	erase_tree(Nodeptr root){
-				if (root != _TNULL)
-					return;
-				erase_tree(root->left);
-				erase_tree(root->right);
-				root->deleteNode(root->value);
-			}
-
 			void	clear(){
 				erase_tree(_root);
 				_size = 0;
 				_root = _TNULL;
 				_begin = _TNULL;
 				_end = _TNULL;
+				_TNULL->left = _TNULL;
+				_TNULL->right = _TNULL;
 			}
 			
 			Nodeptr	create_TNULL(){
@@ -121,6 +123,8 @@ namespace ft{
 
 				new_node = _alloc.allocate(1);
 				_alloc.construct(new_node, node_type());
+				new_node->left = _TNULL;
+				new_node->right = _TNULL;
 				return (new_node);
 			}
 
@@ -167,7 +171,7 @@ namespace ft{
 				if (child->left != _TNULL)
 					child->left->parent = node;
 				child->parent = parent;
-				if (!parent)
+				if (parent == _TNULL)
 					_root = child;
 				else if (parent->left == node)
 					parent->left = child;
@@ -188,7 +192,7 @@ namespace ft{
 				if (child->right != _TNULL)
 					child->right->parent = node;
 				child->parent = parent;
-				if (!parent)
+				if (parent == _TNULL)
 					_root = child;
 				else if (parent->left == node)
 					parent->left = child;
@@ -214,9 +218,12 @@ namespace ft{
 				Nodeptr	parent = NULL;
 
 				parent = SearchParent(value);
+				if (parent == NULL)
+					return (ft::make_pair(iterator(parent), false)); // TO DO verifier
 				if (parent == _TNULL){
 					new_node = _alloc.allocate(1);
 					_alloc.construct(new_node, node_type(NULL, value));
+					new_node->parent = _TNULL;
 					new_node->left = _TNULL;
 					new_node->right = _TNULL;
 					new_node->color = BLACK;
@@ -237,6 +244,8 @@ namespace ft{
 				fix_properties(new_node);
 				_begin = minimum(_root);
 				_end = maximum(_root);
+				_TNULL->left = _end;
+				_TNULL->right = _begin;
 				_size++;
 				return (ft::make_pair(iterator(new_node), true));
 			}
@@ -246,7 +255,7 @@ namespace ft{
 				Nodeptr	uncle = NULL;
 				Nodeptr	grandparent = NULL;
 
-				if (!parent){
+				if (parent == _TNULL){
 					node->color = BLACK;
 					return ;
 				}
@@ -255,7 +264,7 @@ namespace ft{
 					return;
 				
 				grandparent = parent->parent;
-				if (!grandparent){
+				if (grandparent == _TNULL){
 					parent->color = BLACK;
 					_root = parent;
 					return;
@@ -291,7 +300,7 @@ namespace ft{
 			void	transplant(Nodeptr node, Nodeptr new_child){
 				Nodeptr	parent = node->parent;
 
-				if (parent == NULL)
+				if (parent == _TNULL)
 					_root = new_child;
 				else if (parent->left == node)
 					parent->left = new_child;
@@ -421,7 +430,18 @@ namespace ft{
 				}
 				_begin = minimum(_root);
 				_end = maximum(_root);
+				_TNULL->left = _end;
+				_TNULL->right = _begin;
 				--_size;
+			}
+
+			void	erase_tree(Nodeptr root){
+				if (root == _TNULL)
+					return;
+				erase_tree(root->left);
+				erase_tree(root->right);
+				_alloc.destroy(root);
+				_alloc.deallocate(root, 1);
 			}
 
 			void	swap(RBtree &other)
@@ -518,7 +538,13 @@ namespace ft{
 		{
 			// Base case
 			if (root == _TNULL)
+			{
+				std::cout << std::endl;
+				for (int i = 0; i < space; i++)
+					std::cout << " ";
+				std::cout <<"N"<< "["<< (root->color == true ? "R" : "B")<<"]" << "\n";
 				return;
+			}
 		
 			// Increase distance between levels
 			space += 10;
@@ -539,16 +565,6 @@ namespace ft{
 
 		void	print_tree(){
 			print2DUtil(_root, 0);
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
 			std::cout << std::endl;
 			std::cout << std::endl;
 			std::cout << std::endl;
