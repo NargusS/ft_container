@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:25:16 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 18:58:11 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 20:30:08 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,8 +218,9 @@ namespace ft{
 				Nodeptr	parent = NULL;
 
 				parent = SearchParent(value);
-				if (parent == NULL)
+				if (parent == NULL){
 					return (ft::make_pair(iterator(parent), false)); // TO DO verifier
+				}
 				if (parent == _TNULL){
 					new_node = _alloc.allocate(1);
 					_alloc.construct(new_node, node_type(NULL, value));
@@ -228,10 +229,16 @@ namespace ft{
 					new_node->right = _TNULL;
 					new_node->color = BLACK;
 					_root = new_node;
+					_begin = _root;
+					_end = _root;
+					_TNULL->left = _end;
+					_TNULL->right = _begin;
+					_size++;
 					return (ft::make_pair(iterator(new_node), true));
 				}
-				else if (!_comp(value,parent->value) && !_comp(parent->value, value))
+				else if (!_comp(value,parent->value) && !_comp(parent->value, value)){
 					return (ft::make_pair(iterator(parent), false)); // TO DO verifier
+				}
 				
 				new_node = _alloc.allocate(1);
 				_alloc.construct(new_node, node_type(parent, value));
