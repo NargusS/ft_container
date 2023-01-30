@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:25:16 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/29 12:21:48 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 13:19:55 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #define	BINARY_SEARCH_HPP
 #define BLACK false
 #define RED   true
-// #define NULL  0
 #include <iostream>
 #include "./Node.hpp"
 #include "./RBiterator.hpp"
@@ -30,7 +29,7 @@ namespace ft{
 			typedef Allocator	allocator_type;
 			typedef	Node<value_type>	node_type;
 			typedef typename allocator_type::size_type   	size_type;
-			typedef	RBiterator<value_type, node_type> iterator;
+			typedef	ft::RBiterator<value_type, node_type> iterator;
 			typedef	node_type*	Nodeptr;
 		private:
 			allocator_type _alloc;

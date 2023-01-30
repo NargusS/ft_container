@@ -6,15 +6,15 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:12:42 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/29 12:33:17 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 14:43:38 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-
+#include "../../iterators/iterator_traits.hpp"
 namespace ft{
 	template <class Pair, class Node>
-	struct	RBiterator{
+	struct	RBiterator : public ft::iterator<std::bidirectional_iterator_tag, Pair>{
 		public:
 			typedef	Pair&	reference;
 			typedef	const Pair&	const_reference;

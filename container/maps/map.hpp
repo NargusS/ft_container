@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:49:55 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 12:07:35 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 14:36:33 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,27 +95,27 @@ namespace ft{
 			}
 
 			iterator	end(){
-				return (iterator(_tree.end()->right));
+				return (iterator(_tree.end()));
 			}
 
 			const_iterator	end()const{
-				return (const_iterator(_tree.end()->right));
+				return (const_iterator(_tree.end()));
 			}
 
-			iterator	rbegin(){
-				return (reverse_iterator(_tree.end()));
+			reverse_iterator	rbegin(){
+				return (reverse_iterator(end()));
 			}
 
-			const_iterator	rbegin()const{
-				return (const_reverse_iterator(_tree.end()));
+			const_reverse_iterator	rbegin()const{
+				return (const_reverse_iterator(end()));
 			}
 
-			iterator	rend(){
-				return (reverse_iterator(_tree.begin()->left));
+			reverse_iterator	rend(){
+				return (reverse_iterator(begin()));
 			}
 
-			const_iterator	rend()const{
-				return (const_reverse_iterator(_tree.begin()->left));
+			const_reverse_iterator	rend()const{
+				return (const_reverse_iterator(begin()));
 			}
 
 			allocator_type	get_allocator() const{
