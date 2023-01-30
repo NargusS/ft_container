@@ -6,11 +6,12 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:12:42 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 17:01:03 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 18:57:44 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef RBITERATOR_HPP
+#define RBITERATOR_HPP
 #include "../../iterators/iterator_traits.hpp"
 namespace ft{
 	template <class Pair, class Node>
@@ -120,3 +121,4 @@ namespace ft{
 	}
 }
 
+#endif

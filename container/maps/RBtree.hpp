@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   binary_search.hpp                                  :+:      :+:    :+:   */
+/*   RBtree.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:25:16 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 18:02:37 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 18:58:11 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	BINARY_SEARCH_HPP
-#define	BINARY_SEARCH_HPP
+#ifndef	RBTREE_HPP
+#define	RBTREE_HPP
 #define BLACK false
 #define RED   true
 #include <iostream>

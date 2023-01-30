@@ -6,13 +6,14 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 22:54:07 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 14:35:51 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 18:41:03 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RANDOM_ACCESS_ITERATOR_HPP
 # define RANDOM_ACCESS_ITERATOR_HPP
 #include "./iterator_traits.hpp"
+#include <cstddef>
 
  namespace ft {
 	template <class T>

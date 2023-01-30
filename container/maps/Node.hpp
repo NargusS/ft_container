@@ -6,11 +6,12 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:14:37 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 17:02:52 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 18:56:37 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef NODE_HPP
+#define NODE_HPP
 
 namespace ft{
 	template <class Pair>
@@ -75,3 +76,4 @@ namespace ft{
 		return (!(N1 == N2));
 	}
 }
+#endif
