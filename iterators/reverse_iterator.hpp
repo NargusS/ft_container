@@ -6,14 +6,14 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:58:39 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 13:11:33 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 14:36:35 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REVERSE_ITERATOR_HPP
 # define REVERSE_ITERATOR_HPP
+
 #include "./iterator_traits.hpp"
-#include "./iterator.hpp"
 
 namespace ft {
 

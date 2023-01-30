@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 22:08:02 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 12:25:12 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 14:41:34 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,16 @@ namespace ft{
 	struct forward_iterator_tag : public input_iterator_tag{};
 	struct bidirectional_iterator_tag : public forward_iterator_tag{};
 	struct random_access_iterator_tag : public bidirectional_iterator_tag{};
+
+	template< class Category, class T, class Distance = std::ptrdiff_t, class Pointer = T*, class Reference = T& >
+	struct iterator
+	{
+		typedef Category iterator_category;
+		typedef T value_type;
+		typedef Distance difference_type;
+		typedef Pointer pointer;
+		typedef Reference reference;
+	};
 
 	template <class Iter>
 	struct iterator_traits {
