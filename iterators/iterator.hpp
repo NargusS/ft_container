@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 22:54:07 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/19 20:36:01 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 13:06:45 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,33 @@
 	template <class T>
 	class iterator{
 		public:
-			typedef typename ft::iterator_traits<T*>::iterator_category	iterator_category;
-			typedef typename ft::iterator_traits<T*>::value_type			value_type;
-			typedef typename ft::iterator_traits<T*>::difference_type	difference_type;
-			typedef typename ft::iterator_traits<T*>::pointer			pointer;
-			typedef typename ft::iterator_traits<T*>::reference			reference;
+			typedef typename ft::iterator_traits<T>::iterator_category	iterator_category;
+			typedef typename ft::iterator_traits<T>::value_type			value_type;
+			typedef typename ft::iterator_traits<T>::difference_type	difference_type;
+			typedef typename ft::iterator_traits<T>::pointer			pointer;
+			typedef typename ft::iterator_traits<T>::reference			reference;
 
-			iterator():_current(0){};
-			iterator(pointer other):_current(other){};
-			iterator(const iterator<T> &other){
+			explicit iterator():_current(NULL){};
+			explicit iterator(pointer const other):_current(other){};
+
+			template <class U>
+			iterator(const iterator<U> &other){
 				_current = other.base();
 			};
 
+			iterator(const iterator& other){
+				*this = other;
+			}
+
 			iterator& operator=(const iterator& other){
-				if (this != other)
+				if (*this != other)
 					_current = other.base();
 				return (*this);
 			};
 
 			~iterator(){};
 
-			pointer base() const {
+			const pointer base() const {
 				return (_current);
 			}
 
@@ -47,7 +53,7 @@
 			}
 
 			pointer operator->() const{
-				return (&(operator*()));
+				return (_current);
 			}
 
 			reference	operator[](difference_type n) const{
@@ -55,12 +61,12 @@
 			}
 
 			iterator& operator++(){
-				++_current;
+				_current++;
 				return (*(this));
 			}
 
 			iterator& operator--(){
-				--_current;
+				_current--;
 				return (*(this));
 			}
 
@@ -77,11 +83,19 @@
 			}
 
 			iterator operator+(difference_type n) const{
-				return (_current + n);
+				return (iterator(_current + n));
+			}
+
+			difference_type	operator+(iterator n) const{
+				return (_current + n._current);
 			}
 
 			iterator operator-(difference_type n) const{
-				return (_current - n);
+				return (iterator(_current - n));
+			}
+
+			difference_type	operator-(iterator n) const{
+				return (_current - n._current);
 			}
 
 			iterator&  operator+=(difference_type n){
@@ -139,24 +153,24 @@
 		return (lhs.base() >= rhs.base());
 	}
 
-
-	/*			OPERATORS TO ADVANCE THE ITERATOR			*/
-
-	template<class Iter>
-	iterator<Iter>	operator+(typename iterator<Iter>::difference_type n, \
-			   						const iterator<Iter>& it) {
-
-		return (iterator<Iter>(it.base() - n));
+	template<class T>
+	iterator<T>	operator+(typename iterator<T>::difference_type n, const iterator<T>& it) {
+		return (iterator<T>(it.base() + n));
 	}
 
+	template<class T>
+	iterator<T>	operator-(typename iterator<T>::difference_type n, const iterator<T>& it) {
+		return (iterator<T>(it.base() - n));
+	}
 
-	/*			OPERATORS TO COMPUTE THE DISTANCE BETWEEN TWO ITERATOR ADAPTORS			*/
+	template<class T1, class T2>
+	typename iterator<T1>::difference_type	operator-(const iterator<T1>& lhs,const iterator<T2>& rhs) {
+		return (lhs.base() - rhs.base());
+	}
 
-	template<class Iter1, class Iter2>
-	typename iterator<Iter1>::difference_type	operator-(const iterator<Iter1>& lhs, \
-			   												const iterator<Iter2>& rhs) {
-
-		return (rhs.base() - lhs.base());
+	template<class T1, class T2>
+	typename iterator<T1>::difference_type	operator+(const iterator<T1>& lhs, const iterator<T2>& rhs) {
+		return (lhs.base() + rhs.base());
 	}
 };
 

@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:58:39 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/19 00:07:17 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 13:11:33 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,27 @@ namespace ft {
 			typedef typename ft::iterator_traits<It>::pointer 				pointer;
 			typedef typename ft::iterator_traits<It>::reference 			reference;
 
-			/*			CONSTRUCTORS		*/
-
 			reverse_iterator() : _current(iterator_type()) {};
 
 			explicit reverse_iterator(iterator_type x) : _current(x) {};
 
-			reverse_iterator(const reverse_iterator<It>& other) : _current(other.base()) {};
+			template <class U>
+			reverse_iterator(const reverse_iterator<U>& other) : _current(other.base()) {};
 
-			/*			BASE			*/
+			reverse_iterator(const reverse_iterator& other){
+				_current = other._current;
+			}
+
+			reverse_iterator& operator=(const reverse_iterator<It>& other) {
+				return (other.base());
+			}
 
 			virtual ~reverse_iterator(){};
+
 			iterator_type base() const{
 
 				return (_current);
 			}
-
-			/*			OPERATORS =			*/
-
-			reverse_iterator& operator=(const reverse_iterator<It>& other) {
-
-				return (other.base());
-			}
-
-			/*			OPERATORS POINTED-TO ELEMENT			*/
 
 			reference operator*() const {
 				It tmp = _current;
@@ -59,17 +56,12 @@ namespace ft {
 			}
 
 			pointer operator->() const {
-
-				return (_current);
+				return (&(**this));
 			}
-
-			/*			OPERATORS TO ACCESS INDEX			*/
 
 			reference	operator[](difference_type n) const {
-				return (_current - n);
+				return (*(*this + n));
 			}
-
-			/*			OPERATORS TO (IN)(DE)CREMENT			*/
 
 			reverse_iterator&	operator++(){
 				--_current;
@@ -121,64 +113,42 @@ namespace ft {
 	/*			OPERATORS TO COMPARE			*/
 
 	template<class It1, class It2>
-	bool	operator==(const ft::reverse_iterator<It1>& lhs, \
-						const ft::reverse_iterator<It2>& rhs) {
-
+	bool	operator==(const ft::reverse_iterator<It1>& lhs, const ft::reverse_iterator<It2>& rhs) {
 		return (lhs.base() == rhs.base());
 	}
 
 	template<class It1, class It2>
-	bool	operator!=(const ft::reverse_iterator<It1>& lhs, \
-						const ft::reverse_iterator<It2>& rhs) {
-
+	bool	operator!=(const ft::reverse_iterator<It1>& lhs, const ft::reverse_iterator<It2>& rhs) {
 		return (lhs.base() != rhs.base());
 	}
 
 	template<class It1, class It2>
-	bool 	operator<(const ft::reverse_iterator<It1>& lhs, \
-						const ft::reverse_iterator<It2>& rhs) {
-
-		return (lhs.base() < rhs.base());
-	}
-
-	template<class It1, class It2>
-	bool 	operator<=(const ft::reverse_iterator<It1>& lhs, \
-						const ft::reverse_iterator<It2>& rhs) {
-
-		return (lhs.base() <= rhs.base());
-	}
-
-	template<class It1, class It2>
-	bool 	operator>(const ft::reverse_iterator<It1>& lhs, \
-						const ft::reverse_iterator<It2>& rhs) {
-
+	bool 	operator<(const ft::reverse_iterator<It1>& lhs, const ft::reverse_iterator<It2>& rhs) {
 		return (lhs.base() > rhs.base());
 	}
 
 	template<class It1, class It2>
-	bool 	operator>=(const ft::reverse_iterator<It1>& lhs, \
-						const ft::reverse_iterator<It2>& rhs) {
-
+	bool 	operator<=(const ft::reverse_iterator<It1>& lhs, const ft::reverse_iterator<It2>& rhs) {
 		return (lhs.base() >= rhs.base());
 	}
 
-
-	/*			OPERATORS TO ADVANCE THE ITERATOR			*/
-
-	template<class It>
-	reverse_iterator<It>	operator+(typename reverse_iterator<It>::difference_type n, \
-               						const reverse_iterator<It>& it) {
-
-		return (reverse_iterator<It>(it.base() - n));
+	template<class It1, class It2>
+	bool 	operator>(const ft::reverse_iterator<It1>& lhs, const ft::reverse_iterator<It2>& rhs) {
+		return (lhs.base() < rhs.base());
 	}
 
+	template<class It1, class It2>
+	bool 	operator>=(const ft::reverse_iterator<It1>& lhs, const ft::reverse_iterator<It2>& rhs) {
+		return (lhs.base() <= rhs.base());
+	}
 
-	/*			OPERATORS TO COMPUTE THE DISTANCE BETWEEN TWO ITERATOR ADAPTORS			*/
+	template<class It>
+	reverse_iterator<It>	operator+(typename reverse_iterator<It>::difference_type n, const reverse_iterator<It>& it) {
+		return (it + n);
+	}
 
 	template<class It1, class It2>
-	typename reverse_iterator<It1>::difference_type	operator-(const reverse_iterator<It1>& lhs, \
-               												const reverse_iterator<It2>& rhs) {
-
+	typename reverse_iterator<It1>::difference_type	operator-(const reverse_iterator<It1>& lhs, const reverse_iterator<It2>& rhs) {
 		return (rhs.base() - lhs.base());
 	}
 }

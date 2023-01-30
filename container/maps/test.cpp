@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 10:41:57 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 12:06:27 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/30 12:12:27 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int	main(int argc, char **argv){
 	}
 
 	// lib_used::map<int,std::string>::iterator it2 = test.end();
-	lib_used::map<std::string, int>::iterator it2 = test.end();
-	for (; it2 != test.begin(); --it2){
+	lib_used::map<std::string, int>::iterator it2 = test.rbegin();
+	for (; it2 != test.rend(); ++it2){
 		std::cout << (*it2).first << "|" << (*it2).second << std::endl;
 	}
 	return (1);
