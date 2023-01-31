@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:25:16 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 20:30:08 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/31 12:56:36 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ namespace ft{
 			Nodeptr	minimum(Nodeptr root){
 				Nodeptr	tmp= root;
 
-				while (tmp->left && tmp->left != _TNULL)
+				while (tmp->left != _TNULL)
 					tmp = tmp->left;
 				return(tmp);
 			}
@@ -155,7 +155,7 @@ namespace ft{
 			Nodeptr	maximum(Nodeptr root){
 				Nodeptr	tmp= root;
 
-				while (tmp->right && tmp->right != _TNULL)
+				while (tmp->right != _TNULL)
 					tmp = tmp->right;
 				return(tmp);
 			}
@@ -313,7 +313,8 @@ namespace ft{
 					parent->left = new_child;
 				else
 					parent->right = new_child;
-				new_child->parent = parent;
+				if (new_child != _TNULL)
+					new_child->parent = parent;
 			}
 
 			void deleteFix(Nodeptr x) {
@@ -389,7 +390,7 @@ namespace ft{
 						node = tmp;
 					}
 
-					if (_comp(tmp->value, value) || (!_comp(tmp->value, value) && !_comp(value, tmp->value))) {
+					if (_comp(tmp->value, value)) {
 						tmp = tmp->right;
 					} else {
 						tmp = tmp->left;
@@ -415,24 +416,25 @@ namespace ft{
 					min = minimum(node->right);
 					og_color = min->color;
 					fix = min->right;
-					if (min->parent == node) {
+					if (min->parent == node && fix != _TNULL) {
 						fix->parent = min;
 					} 
 					else {
 						transplant(min, min->right);
 						min->right = node->right;
-						min->right->parent = min;
+						if (min->right != _TNULL)
+							min->right->parent = min;
 					}
-
 					transplant(node, min);
 					min->left = node->left;
-					min->left->parent = min;
+					if (min->left != _TNULL)
+						min->left->parent = min;
 					min->color = node->color;
 				}
 				_alloc.destroy(node);
 				_alloc.deallocate(node, 1);
 
-				if (og_color == BLACK) {
+				if (og_color == BLACK && fix != _TNULL) {
 					deleteFix(fix);
 				}
 				_begin = minimum(_root);
@@ -564,7 +566,7 @@ namespace ft{
 			std::cout << std::endl;
 			for (int i = 10; i < space; i++)
 				std::cout << " ";
-			std::cout << root->value.first << "["<< (root->color == true ? "R" : "B")<<"]" << "\n";
+			std::cout << root->value.second << "["<< (root->color == true ? "R" : "B")<<"]" << "\n";
 		
 			// Process left child
 			print2DUtil(root->left, space);
