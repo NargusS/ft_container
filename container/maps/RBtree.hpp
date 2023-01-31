@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:25:16 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/31 12:56:36 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/31 23:44:45 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ namespace ft{
 				_root(_TNULL),
 				_begin(_TNULL),
 				_end(_TNULL),
-				_comp(other.comp),
+				_comp(other._comp),
 				_size(other._size)
 			{
-				_root = copy_tree(other, _TNULL);
+				_root = copy_tree(other, other._root, _TNULL);
 			}
 
 
@@ -138,8 +138,8 @@ namespace ft{
 						tmp = tmp->left;
 					else if (!_comp(value, tmp->value))
 						tmp = tmp->right;
-					else
-						return (NULL);
+					else if (!_comp(value, tmp->value) && !_comp(tmp->value, value))
+						return (parent);
 				}
 				return (parent);
 			}
@@ -147,7 +147,7 @@ namespace ft{
 			Nodeptr	minimum(Nodeptr root){
 				Nodeptr	tmp= root;
 
-				while (tmp->left != _TNULL)
+				while (tmp != _TNULL && tmp->left != _TNULL)
 					tmp = tmp->left;
 				return(tmp);
 			}
@@ -155,7 +155,7 @@ namespace ft{
 			Nodeptr	maximum(Nodeptr root){
 				Nodeptr	tmp= root;
 
-				while (tmp->right != _TNULL)
+				while (tmp != _TNULL && tmp->right != _TNULL)
 					tmp = tmp->right;
 				return(tmp);
 			}
@@ -218,9 +218,6 @@ namespace ft{
 				Nodeptr	parent = NULL;
 
 				parent = SearchParent(value);
-				if (parent == NULL){
-					return (ft::make_pair(iterator(parent), false)); // TO DO verifier
-				}
 				if (parent == _TNULL){
 					new_node = _alloc.allocate(1);
 					_alloc.construct(new_node, node_type(NULL, value));
@@ -237,7 +234,7 @@ namespace ft{
 					return (ft::make_pair(iterator(new_node), true));
 				}
 				else if (!_comp(value,parent->value) && !_comp(parent->value, value)){
-					return (ft::make_pair(iterator(parent), false)); // TO DO verifier
+					return (ft::make_pair(iterator(parent), false));
 				}
 				
 				new_node = _alloc.allocate(1);
@@ -455,31 +452,38 @@ namespace ft{
 
 			void	swap(RBtree &other)
 			{
-				RBtree tmp;
+				// RBtree tmp;
 
-				tmp._alloc = this->_alloc;
-				tmp._comp = this->_comp;
-				tmp._size = this->_size;
-				tmp._root = this->_root;
-				tmp._begin = this->_begin;
-				tmp._end = this->_end;
-				tmp._TNULL = this->_TNULL;
+				// tmp._alloc = _alloc;
+				// tmp._comp = _comp;
+				// tmp._size = _size;
+				// tmp._root = _root;
+				// tmp._begin = _begin;
+				// tmp._end = _end;
+				// tmp._TNULL = _TNULL;
 
-				this->_alloc = other._alloc;
-				this->_comp = other._comp;
-				this->_size = other._size;
-				this->_root = other._root;
-				this->_begin = other._begin;
-				this->_end = other._end;
-				this->_TNULL = other._TNULL;
+				// _alloc = other._alloc;
+				// _comp = other._comp;
+				// _size = other._size;
+				// _root = other._root;
+				// _begin = other._begin;
+				// _end = other._end;
+				// _TNULL = other._TNULL;
 
-				other._alloc = tmp._alloc;
-				other._comp = tmp._comp;
-				other._size = tmp._size;
-				other._root = tmp._root;
-				other._begin = tmp._begin;
-				other._end = tmp._end;
-				other._TNULL = tmp._TNULL;
+				// other._alloc = tmp._alloc;
+				// other._comp = tmp._comp;
+				// other._size = tmp._size;
+				// other._root = tmp._root;
+				// other._begin = tmp._begin;
+				// other._end = tmp._end;
+				// other._TNULL = tmp._TNULL;
+				std::swap(_comp, other._comp);
+				std::swap(_root, other._root);
+				std::swap(_begin, other._begin);
+				std::swap(_end, other._end);
+				std::swap(_size, other._size);
+				std::swap(_alloc, other._alloc);
+				std::swap(_TNULL, other._TNULL);
 			}
 
 			allocator_type	get_allocator() const{
@@ -489,17 +493,17 @@ namespace ft{
 			Nodeptr	copy_tree(const RBtree& other, Nodeptr current_node,Nodeptr parent){
 				Nodeptr new_node;
 
-				if (current_node == _TNULL)
+				if (current_node->is_null())
 					return (_TNULL);
 				
 				new_node = _alloc.allocate(1);
-				_alloc.construct(new_node, node_type(parent, _root->pair));
+				_alloc.construct(new_node, node_type(parent, _root->value));
 
 				if (current_node == other._begin)
 					_begin = new_node;
 				if (current_node == other._end)
 					_end = new_node;
-				if (current_node == other.current_node)
+				if (current_node == other._root)
 					_root = new_node;
 				new_node->left = copy_tree(other, current_node->left, new_node);
 				new_node->right = copy_tree(other, current_node->right, new_node);

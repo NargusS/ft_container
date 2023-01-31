@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:49:55 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/31 00:35:00 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/01/31 23:43:32 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,15 @@ namespace ft{
 				insert(first, last);
 			}
 
-			map( const map& other ){
-				_alloc = other._alloc;
-				_key_comp = other._key_comp;
-				_tree = other._tree;
+			map( const map& other ):
+				_alloc(other._alloc),
+				_key_comp(other.key_comp()),
+				_tree(other._tree)
+			{
 			};
 
 
-			map& operator=(map const& other)
+			map& operator=(const map& other)
 			{
 				if (this != &other)
 				{
@@ -128,18 +129,20 @@ namespace ft{
 
 			mapped_type& operator[](key_type const& key)
 			{
-				return (*((this->insert(ft::make_pair(key, mapped_type()))).first)).second;
+				if (count(key))
+					return (find(key)->second);
+				return (*((insert(ft::make_pair(key, mapped_type()))).first)).second;
 			}
 
-			bool	empty(){
+			bool	empty() const{
 				return (_tree.size() == 0);
 			}
 
-			size_type	size(){
+			size_type	size() const{
 				return (_tree.size());
 			}
 
-			size_type	max_size(){
+			size_type	max_size() const{
 				return (_tree.get_allocator().max_size());
 			}
 
@@ -193,8 +196,8 @@ namespace ft{
 			}
 
 			void	swap(map& other){
-				key_type	tmp;
-				_tree.swap(other);
+				key_compare	tmp;
+				_tree.swap(other._tree);
 
 				tmp = other._key_comp;
 				_key_comp = other._key_comp;
@@ -218,7 +221,7 @@ namespace ft{
 			}
 
 			template <class It>
-			It	_find(const key_type& k){
+			It	_find(const key_type& k) const{
 				node_type*	node = _tree.root();
 
 				while (!node->is_null()){
