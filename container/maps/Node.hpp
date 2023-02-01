@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:14:37 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 18:56:37 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/01 14:59:36 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ namespace ft{
 	};
 
 	template <class P1, class P2>
-	bool	operator==(const Node<P1>& N1, const Node<P2> N2){
+	bool	operator==(const Node<P1>& N1, const Node<P2>& N2){
 		return (&N1 == &N2);
 	}
 
 	template <class P1, class P2>
-	bool	operator!=(const Node<P1>& N1, const Node<P2> N2){
+	bool	operator!=(const Node<P1>& N1, const Node<P2>& N2){
 		return (!(N1 == N2));
 	}
 }
