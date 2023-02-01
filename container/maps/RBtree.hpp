@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:25:16 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/31 23:44:45 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/01 15:21:24 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,9 @@ namespace ft{
 					parent = tmp;
 					if (_comp(value, tmp->value))
 						tmp = tmp->left;
-					else if (!_comp(value, tmp->value))
+					else if (_comp(tmp->value, value))
 						tmp = tmp->right;
-					else if (!_comp(value, tmp->value) && !_comp(tmp->value, value))
+					else
 						return (parent);
 				}
 				return (parent);
@@ -493,11 +493,14 @@ namespace ft{
 			Nodeptr	copy_tree(const RBtree& other, Nodeptr current_node,Nodeptr parent){
 				Nodeptr new_node;
 
-				if (current_node->is_null())
+				if (current_node->is_null()){
+					_TNULL->left = _end;
+					_TNULL->right = _begin;
 					return (_TNULL);
+				}
 				
 				new_node = _alloc.allocate(1);
-				_alloc.construct(new_node, node_type(parent, _root->value));
+				_alloc.construct(new_node, node_type(parent, current_node->value));
 
 				if (current_node == other._begin)
 					_begin = new_node;
