@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:49:55 by achane-l          #+#    #+#             */
-/*   Updated: 2023/02/01 00:03:52 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/01 15:24:32 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,6 @@ namespace ft{
 
 			mapped_type& operator[](key_type const& key)
 			{
-				if (count(key))
-					return (find(key)->second);
 				return (*((insert(ft::make_pair(key, mapped_type()))).first)).second;
 			}
 
@@ -147,8 +145,6 @@ namespace ft{
 			}
 
 			ft::pair<iterator, bool> insert( const value_type& value ){
-				if (count(value.first))
-					return (ft::make_pair(find(value.first), false));
 				return (_tree.insert(value));
 			}
 
