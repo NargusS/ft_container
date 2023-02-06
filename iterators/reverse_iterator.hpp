@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:58:39 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 14:36:35 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/06 18:21:19 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,6 @@ namespace ft {
 
 			reverse_iterator(const reverse_iterator& other){
 				_current = other._current;
-			}
-
-			reverse_iterator& operator=(const reverse_iterator<It>& other) {
-				return (other.base());
 			}
 
 			virtual ~reverse_iterator(){};
