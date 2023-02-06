@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:12:42 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 18:57:44 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/06 18:08:31 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ namespace ft{
 
 			pointer operator->()
 			{
-				return &this->_node->value;
+				return &_node->value;
 			}
 
 			const_pointer operator->() const
 			{
-				return &this->_node->value;
+				return &_node->value;
 			}
 
 			RBiterator&	operator++(){
