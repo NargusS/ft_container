@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:49:55 by achane-l          #+#    #+#             */
-/*   Updated: 2023/02/01 15:24:32 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/06 18:18:24 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ namespace ft{
 			typedef	typename allocator_type::pointer	pointer;
 			typedef	typename allocator_type::const_pointer	const_pointer;
 			typedef	ft::RBiterator<value_type, node_type>	iterator;
-			typedef	ft::RBiterator<const value_type, node_type>	const_iterator;
+			typedef	ft::RBiterator<const value_type, const node_type>	const_iterator;
 			typedef	ft::reverse_iterator<iterator>	reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			typedef	typename std::size_t		size_type;
@@ -91,7 +91,7 @@ namespace ft{
 				return (iterator(_tree.begin()));
 			}
 
-			const_iterator	begin()const{
+			const_iterator	begin() const{
 				return (const_iterator(_tree.begin()));
 			}
 
@@ -99,7 +99,7 @@ namespace ft{
 				return (iterator(_tree.nil()));
 			}
 
-			const_iterator	end()const{
+			const_iterator	end() const{
 				return (const_iterator(_tree.nil()));
 			}
 
@@ -115,7 +115,7 @@ namespace ft{
 				return (reverse_iterator(begin()));
 			}
 
-			const_reverse_iterator	rend()const{
+			const_reverse_iterator	rend() const{
 				return (const_reverse_iterator(begin()));
 			}
 
@@ -161,8 +161,9 @@ namespace ft{
 			}
 
 			void erase (iterator position){
-				if (position == end())
+				if (position == end()){
 					return;
+				}
 				_tree.deleteNode(*position);
 			}
 
@@ -233,16 +234,8 @@ namespace ft{
 				return (It(node));
 			}
 
-			size_type	count(const key_type& k){
-				iterator position = begin();
-
-				for (; position != end(); position++){
-					if ((*position).first == k)
-						break;
-				}
-				if (position == end())
-					return (0);
-				return (1);
+			size_type	count(const key_type& k) const {
+				return (find(k) == end() ? 0 : 1);
 			}
 
 
@@ -257,7 +250,7 @@ namespace ft{
 			}
 			
 			const_iterator lower_bound (const key_type& k) const{
-				iterator first = begin();
+				const_iterator first = begin();
 
 				for (; first != end(); first++){
 					if (!_key_comp(first->first, k))
@@ -277,7 +270,7 @@ namespace ft{
 			}
 			
 			const_iterator upper_bound (const key_type& k) const{
-				iterator first = begin();
+				const_iterator first = begin();
 
 				for (; first != end(); first++){
 					if (_key_comp(k, first->first))
