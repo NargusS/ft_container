@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:49:55 by achane-l          #+#    #+#             */
-/*   Updated: 2023/02/06 18:18:24 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/08 11:49:20 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "../../std_functions/lexicographical_compare.hpp"
 #include <functional>
 #include <memory>
+#include <limits>
 #include "./RBtree.hpp"
 #include "../../iterators/reverse_iterator.hpp"
 
@@ -141,6 +142,8 @@ namespace ft{
 			}
 
 			size_type	max_size() const{
+				if (sizeof(value_type) == 12)
+					return ((std::numeric_limits<size_type>::max() / (sizeof(value_type) * 8)));
 				return (_tree.get_allocator().max_size());
 			}
 
