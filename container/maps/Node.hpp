@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:14:37 by achane-l          #+#    #+#             */
-/*   Updated: 2023/02/01 14:59:36 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:14:33 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ namespace ft{
 
 			Node<Pair>&	operator=(const Node<Pair>& other){
 				if (this != &other){
-					this->color = other.color;
-					this->value = other.value;
-					this->parent = other.parent;
-					this->left = other.left;
-					this->right= other.right;
+					color = other.color;
+					value = other.value;
+					parent = other.parent;
+					left = other.left;
+					right= other.right;
 				}
 				return(*this);
 			}
@@ -46,17 +46,17 @@ namespace ft{
 			void	swap(Node&	other){
 				Node tmp;
 
-				tmp.color = this->color;
-				tmp.value = this->value;
-				tmp.parent = this->parent;
-				tmp.left = this->left;
-				tmp.right= this->right;
+				tmp.color = color;
+				tmp.value = value;
+				tmp.parent = parent;
+				tmp.left = left;
+				tmp.right= right;
 
-				this->color = other.color;
-				this->value = other.value;
-				this->parent = other.parent;
-				this->left = other.left;
-				this->right= other.right;
+				color = other.color;
+				value = other.value;
+				parent = other.parent;
+				left = other.left;
+				right= other.right;
 
 				other.color = tmp.color;
 				other.value = tmp.value;

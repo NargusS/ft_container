@@ -6,20 +6,21 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:12:42 by achane-l          #+#    #+#             */
-/*   Updated: 2023/02/06 18:08:31 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:15:38 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RBITERATOR_HPP
 #define RBITERATOR_HPP
 #include "../../iterators/iterator_traits.hpp"
+
 namespace ft{
 	template <class Pair, class Node>
 	struct	RBiterator : public ft::iterator<std::bidirectional_iterator_tag, Pair>{
 		public:
-			typedef	Pair&	reference;
+			typedef	Pair&		reference;
 			typedef	const Pair&	const_reference;
-			typedef	Pair*	pointer;
+			typedef	Pair*		pointer;
 			typedef	const Pair*	const_pointer;
 		private:
 			Node*	_node;
@@ -30,17 +31,13 @@ namespace ft{
 			explicit RBiterator(_Node* other):_node(other){};
 
 			template< class _Pair, class _Node >
-			RBiterator(RBiterator< _Pair, _Node > const& x) :
-				_node(x.base())
-			{
-			}
+			RBiterator(RBiterator< _Pair, _Node > const& x) : _node(x.base()){}
 
 			template< class _Pair, class _Node >
 			RBiterator& operator=(RBiterator< _Pair const, _Node > const& x)
 			{
-				if (this != &x){
-					this->_node = x._node;
-				}
+				if (this != &x)
+					_node = x._node;
 				return *this;
 			}
 

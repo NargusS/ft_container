@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:25:16 by achane-l          #+#    #+#             */
-/*   Updated: 2023/02/01 15:21:24 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:18:18 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,21 +383,17 @@ namespace ft{
 				bool		og_color;
 				
 				while (tmp != _TNULL){
-					if (!_comp(tmp->value, value) && !_comp(value, tmp->value)) {
+					if (!_comp(tmp->value, value) && !_comp(value, tmp->value))
 						node = tmp;
-					}
 
-					if (_comp(tmp->value, value)) {
+					if (_comp(tmp->value, value))
 						tmp = tmp->right;
-					} else {
+					else
 						tmp = tmp->left;
-					}
 				}
 
-				if (node == _TNULL){
-					std::cout << "NO FOUND" << std::endl;
+				if (node == _TNULL)
 					return;
-				}
 
 				min = node;
 				og_color = min->color;
@@ -413,9 +409,8 @@ namespace ft{
 					min = minimum(node->right);
 					og_color = min->color;
 					fix = min->right;
-					if (min->parent == node && fix != _TNULL) {
+					if (min->parent == node && fix != _TNULL)
 						fix->parent = min;
-					} 
 					else {
 						transplant(min, min->right);
 						min->right = node->right;
@@ -431,9 +426,8 @@ namespace ft{
 				_alloc.destroy(node);
 				_alloc.deallocate(node, 1);
 
-				if (og_color == BLACK && fix != _TNULL) {
+				if (og_color == BLACK && fix != _TNULL)
 					deleteFix(fix);
-				}
 				_begin = minimum(_root);
 				_end = maximum(_root);
 				_TNULL->left = _end;
@@ -452,31 +446,6 @@ namespace ft{
 
 			void	swap(RBtree &other)
 			{
-				// RBtree tmp;
-
-				// tmp._alloc = _alloc;
-				// tmp._comp = _comp;
-				// tmp._size = _size;
-				// tmp._root = _root;
-				// tmp._begin = _begin;
-				// tmp._end = _end;
-				// tmp._TNULL = _TNULL;
-
-				// _alloc = other._alloc;
-				// _comp = other._comp;
-				// _size = other._size;
-				// _root = other._root;
-				// _begin = other._begin;
-				// _end = other._end;
-				// _TNULL = other._TNULL;
-
-				// other._alloc = tmp._alloc;
-				// other._comp = tmp._comp;
-				// other._size = tmp._size;
-				// other._root = tmp._root;
-				// other._begin = tmp._begin;
-				// other._end = tmp._end;
-				// other._TNULL = tmp._TNULL;
 				std::swap(_comp, other._comp);
 				std::swap(_root, other._root);
 				std::swap(_begin, other._begin);
@@ -513,98 +482,6 @@ namespace ft{
 				new_node->color = current_node->color;
 				return (new_node);
 			}
-		// bool	check_rule_1(Node *_root){
-		// 	if (root->color == BLACK)
-		// 		return (true);
-		// 	else
-		// 		return (false);
-		// }
-
-		// int	check_rule_2(Node *root){
-		// 	if (root == TNULL)
-		// 		return (1);
-		// 	int left_child = check_rule_2(root->left);
-		// 	int right_child = check_rule_2(root->right);
-		// 	if (left_child == -1 || right_child == -1 || (root->color == RED && ((root->left->color == RED) || (root->right->color == RED))))
-		// 		return (-1);
-		// 	return (1);
-		// }
-
-		// int check_rule_3(Node *root)
-		// {
-		// 	if (root == TNULL)
-		// 		return (0);
-			
-		// 	int left_child = check_rule_3(root->left);
-		// 	int right_child = check_rule_3(root->right);
-		// 	if (left_child == -1 || right_child == -1 || left_child != right_child)
-		// 		return (-1);
-		// 	else
-		// 		return (left_child + (root->color == BLACK ? 1 : 0));
-		// }
-
-		// void	check_rules(){
-		// 	if (check_rule_1(root) && check_rule_2(root) == 1 && check_rule_3(root) >= 1)
-		// 		std::cout <<"[OK]" << std::endl;
-		// 	else
-		// 		std::cout <<"[KO]"<< std::endl;
-		// }
-
-		void print2DUtil(Nodeptr root, int space)
-		{
-			// Base case
-			if (root == _TNULL)
-			{
-				std::cout << std::endl;
-				for (int i = 0; i < space; i++)
-					std::cout << " ";
-				std::cout <<"N"<< "["<< (root->color == true ? "R" : "B")<<"]" << "\n";
-				return;
-			}
-		
-			// Increase distance between levels
-			space += 10;
-		
-			// Process right child first
-			print2DUtil(root->right, space);
-		
-			// Print current node after space
-			// count
-			std::cout << std::endl;
-			for (int i = 10; i < space; i++)
-				std::cout << " ";
-			std::cout << root->value.second << "["<< (root->color == true ? "R" : "B")<<"]" << "\n";
-		
-			// Process left child
-			print2DUtil(root->left, space);
-		}
-
-		void	print_tree(){
-			print2DUtil(_root, 0);
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-			std::cout << std::endl;
-		}
-
-		// void	tree_to_list(Nodeptr node){
-		// 	if (node == TNULL)
-		// 		return;
-		// 	tree_to_list(node->left);
-		// 	std::cout <<"[" << node->value << "] ";
-		// 	tree_to_list(node->right);
-		// 	return;
-		// }
-
-		// void	test(){
-		// 	tree_to_list(root);
-		// 	std::cout << std::endl;
-		// }
 	};
 }
 #endif
