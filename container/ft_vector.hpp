@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:24:57 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 14:39:03 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/08 11:38:32 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ namespace ft{
 			typedef typename	ft::iterator_traits<iterator>::difference_type	difference_type;
 
 			// ================ Constructors ================
-			explicit vector(const allocator_type& alloc = allocator_type()): _data(NULL), _size(0), _capacity(0), _allocator(alloc) {};
+			vector(): _data(NULL), _size(0), _capacity(0), _allocator(allocator_type()) {};
+
+			explicit vector(const allocator_type& alloc): _data(NULL), _size(0), _capacity(0), _allocator(alloc) {};
 
 			explicit vector( size_type count,const value_type& value = value_type(),const allocator_type& alloc = allocator_type()){
 				_data = NULL;
@@ -223,10 +225,13 @@ namespace ft{
 
 				if (n) {
 					if (_size + n  > _capacity) {
-						if (_size + n > _capacity * 2)
-							reserve(_size + n);
+						if (!_capacity)
+							reserve(1);
 						else
 							reserve(_size * 2);
+						if (_capacity < _size + n)
+							reserve(_size + n);
+
 					}
 					for (size_type i = _size; i > index; i--) {
 						_allocator.construct(_data + i + n - 1,*(_data + i - 1));
@@ -260,22 +265,29 @@ namespace ft{
 				return ret;
 			};
 
-			iterator erase (iterator first, iterator last){
-				iterator end = end();
+			iterator erase(iterator first, iterator last) {
+
+				iterator start = first;
+				iterator end = this->end();
 				size_type count = last - first;
 
 				if (count == 0)
 					return last;
-				while (first + count != end()) {
+
+				while (first + count != this->end()) {
 
 					*(first) = *(first + count);
 					first++;
 				}
+
 				while (count--)
 					pop_back();
+
 				if (last == end)
-					return end();
-				return iterator(first);
+					return this->end();
+
+				return iterator(start);
+
 			};
 
 			void	push_back(const value_type& val){
@@ -303,7 +315,7 @@ namespace ft{
 				_capacity = other._capacity;
 				_size = other._size;
 
-				other._alloc = tmp_allocator;
+				other._allocator = tmp_allocator;
 				other._data = tmp_data;
 				other._capacity = tmp_capacity;
 				other._size = tmp_size;
