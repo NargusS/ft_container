@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 16:26:06 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/19 18:09:40 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/08 17:02:11 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@
 #define WHT "\033[0;37m"
 #define RESET "\033[0m"
 
-#include "../std_functions/lexicographical_compare.hpp"
-#include "../std_functions/pair.hpp"
+#include "../../std_functions/lexicographical_compare.hpp"
+#include "../../std_functions/pair.hpp"
 #include <vector>
 #include <utility>
 #include <algorithm>
 #include <iostream>
-#include "../std_functions/enable_if.hpp"
-#include "../std_functions/equal.hpp"
-#include "../std_functions/is_integral.hpp"
+#include "../../std_functions/enable_if.hpp"
+#include "../../std_functions/equal.hpp"
+#include "../../std_functions/is_integral.hpp"
 #include <type_traits>
 
 template <typename T1, typename T2>

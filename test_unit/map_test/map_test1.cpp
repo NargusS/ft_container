@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_insert_function.cpp                           :+:      :+:    :+:   */
+/*   map_test1.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 19:09:02 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/31 12:57:03 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/08 17:44:28 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <cstdlib>
-#include "../../container/maps/map.hpp"
+#include "../../container/map.hpp"
 #include <map>
 #ifndef lib_used
 #define lib_used ft
