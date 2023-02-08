@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 22:54:07 by achane-l          #+#    #+#             */
-/*   Updated: 2023/01/30 18:41:03 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/08 12:07:07 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 			}
 
 			random_access_iterator& operator=(const random_access_iterator& other){
-				if (*this != other)
+				if (this != &other)
 					_current = other.base();
 				return (*this);
 			};
