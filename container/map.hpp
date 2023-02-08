@@ -6,20 +6,20 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:49:55 by achane-l          #+#    #+#             */
-/*   Updated: 2023/02/08 16:14:01 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:25:04 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_HPP
 #define MAP_HPP
-#include "../../std_functions/pair.hpp"
-#include "../../std_functions/equal.hpp"
-#include "../../std_functions/lexicographical_compare.hpp"
+#include "../std_functions/pair.hpp"
+#include "../std_functions/equal.hpp"
+#include "../std_functions/lexicographical_compare.hpp"
 #include <functional>
 #include <memory>
 #include <limits>
-#include "./RBtree.hpp"
-#include "../../iterators/reverse_iterator.hpp"
+#include "RBtree/RBtree.hpp"
+#include "../iterators/reverse_iterator.hpp"
 
 namespace ft{
 	template<class Key,class T,class Compare = std::less< Key >,class Allocator = std::allocator<ft::pair<const Key, T> > >
