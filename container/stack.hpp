@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 19:09:54 by achane-l          #+#    #+#             */
-/*   Updated: 2023/02/08 19:41:48 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/09 14:07:42 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ namespace ft{
 				_cont = other._cont;
 			}
 
-			~stack();
+			~stack(){};
 			stack& operator=( const stack& other ){
 				if (this != &other)
 					_cont = other._cont;
