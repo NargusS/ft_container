@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_map.cpp                                       :+:      :+:    :+:   */
+/*   map_test.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 13:19:29 by achane-l          #+#    #+#             */
-/*   Updated: 2023/02/08 16:55:53 by achane-l         ###   ########.fr       */
+/*   Updated: 2023/02/09 15:03:48 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,12 @@
 
 #define GREY "\033[1;90m"
 #ifndef lib_used
-#define lib_used ft
+    #define lib_used ft
+    #define lib_used2 std
+#elif lib_used==ft
+    #define lib_used2 std
+#elif lib_used==std
+    #define lib_used2 ft
 #endif
 
 
@@ -35,18 +40,18 @@
 template <typename T1, typename T2>
 static void test_default_constructor()
 {
-    ft::map<T1, T2> a;
+    lib_used::map<T1, T2> a;
 
     assert(a.empty());
 
-    a.insert(ft::make_pair<T1, T2>(T1(), T2()));
+    a.insert(lib_used::make_pair<T1, T2>(T1(), T2()));
 
     for (int i = 0; i < 50; i++)
-        assert(a.insert(ft::make_pair<T1, T2>(T1(), T2())).second == false);
+        assert(a.insert(lib_used::make_pair<T1, T2>(T1(), T2())).second == false);
 
     assert(a.size() == 1);
-    typename ft::map<T1, T2>::iterator it = a.begin();
-    assert(a.insert(ft::make_pair<T1, T2>(T1(), T2())).first == it);
+    typename lib_used::map<T1, T2>::iterator it = a.begin();
+    assert(a.insert(lib_used::make_pair<T1, T2>(T1(), T2())).first == it);
 }
 
 static void default_constructor()
@@ -63,12 +68,12 @@ static void default_constructor()
 template <typename T1, typename T2>
 static void test_range_constructor()
 {
-    ft::map<T1, T2> a;
+    lib_used::map<T1, T2> a;
 
-    a.insert(ft::make_pair<T1, T2>(T1(), T2()));
+    a.insert(lib_used::make_pair<T1, T2>(T1(), T2()));
     assert(a.size() == 1);
 
-    ft::map<T1, T2> b(a.begin(), a.end());
+    lib_used::map<T1, T2> b(a.begin(), a.end());
 
     assert(b.size() == 1);
 
@@ -91,12 +96,12 @@ static void range_constructor()
 template <typename T1, typename T2>
 static void test_copy_constructor()
 {
-    ft::map<T1, T2> a;
+    lib_used::map<T1, T2> a;
 
-    a.insert(ft::make_pair<T1, T2>(T1(), T2()));
+    a.insert(lib_used::make_pair<T1, T2>(T1(), T2()));
     assert(a.size() == 1);
 
-    ft::map<T1, T2> b(a);
+    lib_used::map<T1, T2> b(a);
 
     assert(b.size() == 1);
 
@@ -119,15 +124,15 @@ static void copy_constructor()
 template <typename T1, typename T2>
 static void test_assignement_operator()
 {
-    ft::map<T1, T2> a;
-    ft::map<T1, T2> b;
+    lib_used::map<T1, T2> a;
+    lib_used::map<T1, T2> b;
 
     a = b;
 
     assert(a.empty());
     assert(b.empty());
 
-    a.insert(ft::make_pair<T1, T2>(T1(), T2()));
+    a.insert(lib_used::make_pair<T1, T2>(T1(), T2()));
 
     b = a;
 
@@ -153,10 +158,10 @@ static void assignement_operator()
 
 static void test_begin_end_practical()
 {
-    ft::map<char, int> a;
+    lib_used::map<char, int> a;
 
-    a.insert(ft::make_pair<char, int>('a', 5));
-    a.insert(ft::make_pair<char, int>('b', 5));
+    a.insert(lib_used::make_pair<char, int>('a', 5));
+    a.insert(lib_used::make_pair<char, int>('b', 5));
 
     assert((*(a.begin())).first == 'a');
     assert((*(++a.begin())).first == 'b');
@@ -167,12 +172,12 @@ static void test_begin_end_practical()
 template <typename T1, typename T2>
 static void test_begin_end()
 {
-    ft::map<T1, T2> a;
+    lib_used::map<T1, T2> a;
 
-    a.insert(ft::make_pair<T1, T2>(T1(), T2()));
+    a.insert(lib_used::make_pair<T1, T2>(T1(), T2()));
 
     size_t count = 0;
-    for (typename ft::map<T1, T2>::iterator it = a.begin(); it != a.end(); it++)
+    for (typename lib_used::map<T1, T2>::iterator it = a.begin(); it != a.end(); it++)
     {
         assert((*(it)).first == T1());
         assert((*(it)).second == T2());
@@ -195,10 +200,10 @@ static void begin_end()
 
 static void test_rbegin_rend_practical()
 {
-    ft::map<char, int> a;
+    lib_used::map<char, int> a;
 
-    a.insert(ft::make_pair<char, int>('a', 5));
-    a.insert(ft::make_pair<char, int>('b', 5));
+    a.insert(lib_used::make_pair<char, int>('a', 5));
+    a.insert(lib_used::make_pair<char, int>('b', 5));
 
     assert((*(a.rbegin())).first == 'b');
     assert((*(++a.rbegin())).first == 'a');
@@ -210,12 +215,12 @@ template <typename T1, typename T2>
 static void test_rbegin_rend()
 {
 
-    ft::map<T1, T2> a;
+    lib_used::map<T1, T2> a;
 
-    a.insert(ft::make_pair<T1, T2>(T1(), T2()));
+    a.insert(lib_used::make_pair<T1, T2>(T1(), T2()));
 
     size_t count = 0;
-    for (typename ft::map<T1, T2>::reverse_iterator it = a.rbegin(); it != a.rend(); it++)
+    for (typename lib_used::map<T1, T2>::reverse_iterator it = a.rbegin(); it != a.rend(); it++)
     {
         assert((*(it)).first == T1());
         assert((*(it)).second == T2());
@@ -239,11 +244,11 @@ static void rbegin_rend()
 template <typename T1, typename T2>
 static void test_empty()
 {
-    ft::map<T1, T2> a;
+    lib_used::map<T1, T2> a;
 
     assert(a.empty());
 
-    a.insert(ft::make_pair<T1, T2>(T1(), T2()));
+    a.insert(lib_used::make_pair<T1, T2>(T1(), T2()));
     assert(!a.empty());
 
     a.erase(a.begin());
@@ -264,12 +269,12 @@ static void empty()
 template <typename T1, typename T2>
 static void test_size()
 {
-    ft::map<T1, T2> a;
+    lib_used::map<T1, T2> a;
 
     assert(a.size() == 0);
 
     for (int i = 0; i < 50; i++)
-        a.insert(ft::make_pair<T1, T2>(T1(), T2()));
+        a.insert(lib_used::make_pair<T1, T2>(T1(), T2()));
     assert(a.size() == 1);
 
     a.erase(a.begin());
@@ -289,7 +294,7 @@ static void size()
 
 static void max_size()
 {
-    ft::map<char, int> a;
+    lib_used::map<char, int> a;
 
     a.max_size();
 
@@ -298,12 +303,12 @@ static void max_size()
 
 static void test_operator_access_practical()
 {
-    ft::map<char, int> a;
+    lib_used::map<char, int> a;
 
-    a.insert(ft::make_pair<char, int>('a', 5));
-    a.insert(ft::make_pair<char, int>('b', 5));
-    a.insert(ft::make_pair<char, int>('c', 5));
-    a.insert(ft::make_pair<char, int>('d', 5));
+    a.insert(lib_used::make_pair<char, int>('a', 5));
+    a.insert(lib_used::make_pair<char, int>('b', 5));
+    a.insert(lib_used::make_pair<char, int>('c', 5));
+    a.insert(lib_used::make_pair<char, int>('d', 5));
 
     assert(a['a'] == 5);
     assert(a['b'] == 5);
@@ -321,14 +326,14 @@ static void test_operator_access_practical()
     a['a'] = 10;
     assert(a['a'] == 10);
 
-    a.insert(ft::make_pair<char, int>('a', 5));
+    a.insert(lib_used::make_pair<char, int>('a', 5));
     assert(a['a'] == 10);
 }
 
 template <typename T1, typename T2>
 static void test_operator_access()
 {
-    ft::map<T1, T2> a;
+    lib_used::map<T1, T2> a;
 
     for (int i = 0; i < 50; i++)
         a[T1()] = T2();
@@ -354,30 +359,30 @@ static void operator_access()
 
 static void test_insert_single_practical()
 {
-    ft::map<char, int> a;
+    lib_used::map<char, int> a;
 
-    a.insert(ft::make_pair<char, int>('a', 5));
+    a.insert(lib_used::make_pair<char, int>('a', 5));
     assert(a.size() == 1);
-    a.insert(ft::make_pair<char, int>('a', 5));
+    a.insert(lib_used::make_pair<char, int>('a', 5));
     assert(a.size() == 1);
-    a.insert(ft::make_pair<char, int>('a', 999));
+    a.insert(lib_used::make_pair<char, int>('a', 999));
     assert(a.size() == 1);
-    a.insert(ft::make_pair<char, int>('b', 0));
+    a.insert(lib_used::make_pair<char, int>('b', 0));
     assert(a.size() == 2);
 }
 
 static void test_insert_range_practical()
 {
-    ft::map<char, int> a;
+    lib_used::map<char, int> a;
 
-    a.insert(ft::make_pair<char, int>('a', 5));
-    a.insert(ft::make_pair<char, int>('b', 6));
-    a.insert(ft::make_pair<char, int>('c', 5));
-    a.insert(ft::make_pair<char, int>('d', 6));
+    a.insert(lib_used::make_pair<char, int>('a', 5));
+    a.insert(lib_used::make_pair<char, int>('b', 6));
+    a.insert(lib_used::make_pair<char, int>('c', 5));
+    a.insert(lib_used::make_pair<char, int>('d', 6));
 
     assert(a.size() == 4);
 
-    ft::map<char, int> b;
+    lib_used::map<char, int> b;
 
     b.insert(a.begin(), a.end());
 
@@ -388,15 +393,15 @@ static void test_insert_range_practical()
 
 static void test_insert_hint_practical()
 {
-    ft::map<char, int> a;
+    lib_used::map<char, int> a;
 
-    a.insert(a.begin(), ft::make_pair<char, int>('a', 5));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('a', 5));
 
     assert(a.size() == 1);
-    a.insert(a.begin(), ft::make_pair<char, int>('a', 6));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('a', 6));
     assert(a.size() == 1);
 
-    a.insert(a.begin(), ft::make_pair<char, int>('b', 6));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('b', 6));
     assert(a.size() == 2);
 }
 
@@ -410,15 +415,15 @@ static void test_insert_practical()
 template <typename T1, typename T2>
 static void test_insert()
 {
-    ft::map<T1, T2> a;
-    ft::map<T1, T2> empty;
+    lib_used::map<T1, T2> a;
+    lib_used::map<T1, T2> empty;
 
-    a.insert(ft::make_pair<T1, T2>(T1(), T2()));
+    a.insert(lib_used::make_pair<T1, T2>(T1(), T2()));
     assert(a.size() == 1);
-    a.insert(ft::make_pair<T1, T2>(T1(), T2()));
+    a.insert(lib_used::make_pair<T1, T2>(T1(), T2()));
     assert(a.size() == 1);
 
-    ft::map<T1, T2> b;
+    lib_used::map<T1, T2> b;
 
     b.insert(empty.begin(), empty.end());
     assert(b.empty());
@@ -444,12 +449,12 @@ static void insert()
 
 static void test_erase_practical()
 {
-    ft::map<char, int> a;
+    lib_used::map<char, int> a;
 
-    a.insert(a.begin(), ft::make_pair<char, int>('a', 1));
-    a.insert(a.begin(), ft::make_pair<char, int>('b', 2));
-    a.insert(a.begin(), ft::make_pair<char, int>('c', 3));
-    a.insert(a.begin(), ft::make_pair<char, int>('d', 4));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('a', 1));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('b', 2));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('c', 3));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('d', 4));
 
     assert((*(a.begin())).first == 'a');
     assert(a.size() == 4);
@@ -470,28 +475,14 @@ static void test_erase_practical()
     assert((*(a.begin())).second == 4);
 }
 
-template <typename T1, typename T2>
-static void test_erase()
-{
-    ft::map<T1, T2> a;
-
-    a.insert(ft::make_pair<T1, T2>(T1(), T2()));
-    a.erase(a.begin());
-
-    assert(a.empty());
-    a.erase(a.begin());
-    a.erase(a.end());
-    assert(a.empty());
-}
-
 static void test_erase_key_practical()
 {
-    ft::map<char, int> a;
+    lib_used::map<char, int> a;
 
-    a.insert(a.begin(), ft::make_pair<char, int>('a', 1));
-    a.insert(a.begin(), ft::make_pair<char, int>('b', 2));
-    a.insert(a.begin(), ft::make_pair<char, int>('c', 3));
-    a.insert(a.begin(), ft::make_pair<char, int>('d', 4));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('a', 1));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('b', 2));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('c', 3));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('d', 4));
 
     assert(a.erase('a') == 1);
     assert(a.erase('a') == 0);
@@ -512,9 +503,9 @@ static void test_erase_key_practical()
 template <typename T1, typename T2>
 static void test_erase_key()
 {
-    ft::map<T1, T2> a;
+    lib_used::map<T1, T2> a;
 
-    a.insert(ft::make_pair<T1, T2>(T1(), T2()));
+    a.insert(lib_used::make_pair<T1, T2>(T1(), T2()));
     assert(a.erase(T1()) == 1);
 
     assert(a.empty());
@@ -524,12 +515,12 @@ static void test_erase_key()
 
 static void test_erase_range_practical()
 {
-    ft::map<char, int> a;
+    lib_used::map<char, int> a;
 
-    a.insert(a.begin(), ft::make_pair<char, int>('a', 1));
-    a.insert(a.begin(), ft::make_pair<char, int>('b', 2));
-    a.insert(a.begin(), ft::make_pair<char, int>('c', 3));
-    a.insert(a.begin(), ft::make_pair<char, int>('d', 4));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('a', 1));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('b', 2));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('c', 3));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('d', 4));
 
     a.erase(a.begin(), ++a.begin());
     assert((*(a.begin())).first == 'b');
@@ -542,9 +533,9 @@ static void test_erase_range_practical()
 template <typename T1, typename T2>
 static void test_erase_range()
 {
-    ft::map<T1, T2> a;
+    lib_used::map<T1, T2> a;
 
-    a.insert(ft::make_pair<T1, T2>(T1(), T2()));
+    a.insert(lib_used::make_pair<T1, T2>(T1(), T2()));
     a.erase(a.begin(), a.end());
 
     assert(a.empty());
@@ -556,12 +547,6 @@ static void erase()
     test_erase_practical();
     test_erase_range_practical();
     test_erase_key_practical();
-
-    test_erase<char, int>();
-    test_erase<int, int>();
-    test_erase<float, char>();
-    test_erase<char *, int>();
-    test_erase<int, std::string>();
 
     test_erase_key<char, int>();
     test_erase_key<int, int>();
@@ -580,14 +565,14 @@ static void erase()
 
 static void test_swap_practical()
 {
-    ft::map<char, int> a;
+    lib_used::map<char, int> a;
 
-    a.insert(a.begin(), ft::make_pair<char, int>('a', 1));
-    a.insert(a.begin(), ft::make_pair<char, int>('b', 2));
-    a.insert(a.begin(), ft::make_pair<char, int>('c', 3));
-    a.insert(a.begin(), ft::make_pair<char, int>('d', 4));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('a', 1));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('b', 2));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('c', 3));
+    a.insert(a.begin(), lib_used::make_pair<char, int>('d', 4));
 
-    ft::map<char, int> b;
+    lib_used::map<char, int> b;
 
     a.swap(b);
 
@@ -602,10 +587,10 @@ static void test_swap_practical()
 template <typename T1, typename T2>
 static void test_swap()
 {
-    ft::map<T1, T2> a;
-    ft::map<T1, T2> b;
+    lib_used::map<T1, T2> a;
+    lib_used::map<T1, T2> b;
 
-    a.insert(ft::make_pair<T1, T2>(T1(), T2()));
+    a.insert(lib_used::make_pair<T1, T2>(T1(), T2()));
 
     assert(a.size() == 1);
     assert((*(a.begin())).first == T1());
@@ -638,10 +623,10 @@ static void swap()
 
 static void test_clear_practical()
 {
-    ft::map<char, int> a;
+    lib_used::map<char, int> a;
 
     for (int i = 0; i < 50; i++)
-        a.insert(ft::make_pair<char, int>(i, i));
+        a.insert(lib_used::make_pair<char, int>(i, i));
 
     assert(a.size() == 50);
 
@@ -653,7 +638,7 @@ static void test_clear_practical()
 template <typename T1, typename T2>
 static void test_clear()
 {
-    ft::map<T1, T2> a;
+    lib_used::map<T1, T2> a;
 
     a[T1()] = T2();
     assert(a.size() == 1);
@@ -683,8 +668,8 @@ static void clear()
 template <typename T1, typename T2>
 static void test_find()
 {
-    ft::map<T1, T2> a;
-    const ft::map<T1, T2> b;
+    lib_used::map<T1, T2> a;
+    const lib_used::map<T1, T2> b;
 
     assert(a.find(T1()) == a.end());
     assert(b.find(T1()) == b.end());
@@ -711,10 +696,10 @@ static void find()
 
 static void test_count_practical()
 {
-    ft::map<char, int> a;
+    lib_used::map<char, int> a;
 
     for (int i = 0; i < 50; i++)
-        a.insert(ft::make_pair<char, int>(i, i));
+        a.insert(lib_used::make_pair<char, int>(i, i));
 
     for (int i = 0; i < 50; i++)
         assert(a.count(i) == 1);
@@ -728,7 +713,7 @@ static void test_count_practical()
 template <typename T1, typename T2>
 static void test_count()
 {
-    ft::map<T1, T2> a;
+    lib_used::map<T1, T2> a;
 
     assert(a.count(T1()) == 0);
     a[T1()];
@@ -753,13 +738,13 @@ static void count()
 
 static void test_lower_bound_practical()
 {
-    ft::map<char, int> a;
-    std::map<char, int> std_a;
+    lib_used::map<char, int> a;
+    lib_used2::map<char, int> std_a;
 
     for (int i = 0; i < 50; i++)
     {
-        a.insert(ft::make_pair<char, int>(i, i));
-        std_a.insert(std::make_pair(i, i));
+        a.insert(lib_used::make_pair<char, int>(i, i));
+        std_a.insert(lib_used2::make_pair(i, i));
         assert((*(a.lower_bound(i))).first == i);
         assert((*(std_a.lower_bound(i))).first == i);
     }
@@ -792,7 +777,7 @@ static void test_lower_bound_practical()
     assert((*(a.lower_bound('f'))).first == 'g');
     assert((*(a.lower_bound('f'))).second == 120);
 
-    const ft::map<char, int> b = a;
+    const lib_used::map<char, int> b = a;
 
     assert(b.lower_bound('b') == ++b.begin());
     assert(b.lower_bound('f') == --b.end());
@@ -803,8 +788,8 @@ static void test_lower_bound_practical()
 template <typename T1, typename T2>
 static void test_lower_bound()
 {
-    ft::map<T1, T2> a;
-    std::map<T1, T2> std_a;
+    lib_used::map<T1, T2> a;
+    lib_used2::map<T1, T2> std_a;
 
     assert(a.lower_bound(T1()) == a.end());
     assert(std_a.lower_bound(T1()) == std_a.end());
@@ -819,7 +804,7 @@ static void test_lower_bound()
     assert((*(std_a.lower_bound(T1()))).first == T1());
     assert((*(std_a.lower_bound(T1()))).second == T2());
 
-    const ft::map<T1, T2> b(a);
+    const lib_used::map<T1, T2> b(a);
 
     assert(b.lower_bound(T1()) == b.begin());
     assert((*(b.lower_bound(T1()))).first == T1());
@@ -840,13 +825,13 @@ static void lower_bound()
 
 static void test_upper_bound_practical()
 {
-    ft::map<char, int> a;
-    std::map<char, int> std_a;
+    lib_used::map<char, int> a;
+    lib_used2::map<char, int> std_a;
 
     for (int i = 0; i < 50; i++)
     {
-        a.insert(ft::make_pair<char, int>(i, i));
-        std_a.insert(std::make_pair(i, i));
+        a.insert(lib_used::make_pair<char, int>(i, i));
+        std_a.insert(lib_used2::make_pair(i, i));
         assert(a.upper_bound(i) == a.end());
         assert(std_a.upper_bound(i) == std_a.end());
     }
@@ -881,7 +866,7 @@ static void test_upper_bound_practical()
     assert((*(a.upper_bound('f'))).second == 120);
     assert(a.upper_bound('g') == a.end());
 
-    const ft::map<char, int> b = a;
+    const lib_used::map<char, int> b = a;
 
     assert((*(b.upper_bound('a'))).first == 'b');
     assert((*(b.upper_bound('a'))).second == 40);
@@ -893,8 +878,8 @@ static void test_upper_bound_practical()
 template <typename T1, typename T2>
 static void test_upper_bound()
 {
-    ft::map<T1, T2> a;
-    std::map<T1, T2> std_a;
+    lib_used::map<T1, T2> a;
+    lib_used2::map<T1, T2> std_a;
 
     assert(a.upper_bound(T1()) == a.end());
     assert(std_a.upper_bound(T1()) == std_a.end());
@@ -904,7 +889,7 @@ static void test_upper_bound()
     assert(a.upper_bound(T1()) == a.end());
 
     assert(std_a.upper_bound(T1()) == std_a.end());
-    const ft::map<T1, T2> b(a);
+    const lib_used::map<T1, T2> b(a);
 
     assert(b.upper_bound(T1()) == b.end());
 }
@@ -923,13 +908,13 @@ static void upper_bound()
 
 static void test_equal_range_practical()
 {
-    ft::map<char, int> mymap;
+    lib_used::map<char, int> mymap;
 
     mymap['a'] = 10;
     mymap['b'] = 20;
     mymap['c'] = 30;
 
-    ft::pair<ft::map<char, int>::iterator, ft::map<char, int>::iterator> ret;
+    lib_used::pair<lib_used::map<char, int>::iterator, lib_used::map<char, int>::iterator> ret;
     ret = mymap.equal_range('b');
 
     assert(ret.first->first == 'b');
@@ -962,7 +947,7 @@ static void equal_range()
 
 int main()
 {
-    std::cout << YELLOW "========= TEST FT::MAP =========" END << std::endl;
+    std::cout << YELLOW "========= TEST lib_used::MAP =========" END << std::endl;
 
     std::cout << WHITE "=== Constructors" END << std::endl;
     default_constructor();
